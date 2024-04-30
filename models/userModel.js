@@ -17,7 +17,7 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
-        alamat: {
+        address: {
             type: String,
             required: false
         },
@@ -32,7 +32,7 @@ const userSchema = new Schema(
     }
 )
 
-userSchema.methods.generateJWT = async () => {
+userSchema.methods.generateJWT = async function(){
     return await sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: "30d" })
 }
 
