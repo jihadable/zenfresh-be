@@ -1,5 +1,5 @@
 const { User } = require("../models/userModel")
-const bcrypt = require("bcrypt")
+const { compareSync } = require("bcrypt")
 
 // register method
 const register = async (req, res) => {
@@ -14,10 +14,7 @@ const register = async (req, res) => {
             })
         }
 
-        // encrypt password
-        const encryptedPassword = await bcrypt.hash(req.body.password, 10)
-
-        user = await User.create({ ...req.body, password: encryptedPassword })
+        user = await User.create({ ...req.body })
     
         return res.status(201).json({
             status: 201,
@@ -27,7 +24,8 @@ const register = async (req, res) => {
                 email: user.email,
                 alamat: user.alamat,
                 role: user.role
-            }
+            },
+            token: await user.generateJWT()
         })
 
     } catch (error){
@@ -56,16 +54,23 @@ const login = async (req, res) => {
         }
 
         // wrong password
-        if (!bcrypt.compareSync(password, user.password)){
+        if (!compareSync(password, user.password)){
             return res.status(401).json({
                 status: 401,
-                message: "Email or password is incorrect"
+                message: "Invalid email or password"
             })
         }
 
         return res.status(202).json({
             status: 202,
-            message: "Login successfully"
+            message: "Login successfully",
+            user: {
+                fullname: user.fullname,
+                email: user.email,
+                alamat: user.alamat,
+                role: user.role
+            },
+            token: await user.generateJWT()
         })
     } catch (error){
         console.log(error.message)
@@ -77,9 +82,4 @@ const login = async (req, res) => {
     }
 }
 
-// logout method
-const logout = async (req, res) => {
-
-}
-
-module.exports = { register, login, logout }
+module.exports = { register, login }

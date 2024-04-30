@@ -1,6 +1,5 @@
-const mongoose = require("mongoose")
-
-const Schema = mongoose.Schema
+const { Schema, model } = require("mongoose")
+const { sign } = require("jsonwebtoken")
 
 // user schema
 const userSchema = new Schema(
@@ -33,4 +32,8 @@ const userSchema = new Schema(
     }
 )
 
-module.exports = { User: mongoose.model("User", userSchema) }
+userSchema.methods.generateJWT = async () => {
+    return await sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: "30d" })
+}
+
+module.exports = { User: model("User", userSchema) }
