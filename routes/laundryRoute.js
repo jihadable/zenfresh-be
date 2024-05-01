@@ -1,6 +1,7 @@
 const { Router } = require("express")
 const { getAllLaundries, getSingleLaundry, storeLaundry, deleteLaundry, updateLaundry } = require("../controllers/laundryController")
 const { extractUserId } = require("../middlewares/authMiddleware")
+const idValidation = require("../middlewares/idValidationMiddleware")
 
 const laundryRouter = Router()
 
@@ -14,9 +15,9 @@ laundryRouter.get("/:id", getSingleLaundry)
 laundryRouter.post("/", extractUserId, storeLaundry)
 
 // delete a laundry
-laundryRouter.delete("/:id", extractUserId, deleteLaundry)
+laundryRouter.delete("/:id", deleteLaundry)
 
 // update a laundry
-laundryRouter.patch("/:id", extractUserId, updateLaundry)
+laundryRouter.patch("/:id", extractUserId, idValidation, updateLaundry)
 
 module.exports = laundryRouter

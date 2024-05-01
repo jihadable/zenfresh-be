@@ -1,4 +1,4 @@
-const errorResponse = error => {
+const errorResponse = (error, res) => {
     console.log(error.message)
 
     res.status(500).json({

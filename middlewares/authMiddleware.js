@@ -9,21 +9,23 @@ const encryptPassword = async (req, res, next) => {
         
         next()
     } catch (error){
-        errorResponse(error)
+        errorResponse(error, res)
     }
 }
 
 // extract user_id from authorization token
 const extractUserId = async (req, res, next) => {
     try {
-        const token = req.header("Authorization").split(" ")[1]
+        const authorization = req.header("Authorization")
 
-        if (!token){
+        if (!authorization){
             return res.status(401).json({
                 status: 401,
                 message: "Token not provided"
             })
         }
+
+        const token = authorization.split(" ")[1]
 
         const { id } = verify(token, process.env.JWT_SECRET)
 
@@ -31,7 +33,7 @@ const extractUserId = async (req, res, next) => {
 
         next()
     } catch (error){
-        errorResponse(error)
+        errorResponse(error, res)
     }
 }
 

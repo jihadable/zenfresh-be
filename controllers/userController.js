@@ -30,7 +30,7 @@ const register = async (req, res) => {
         })
 
     } catch (error){
-        errorResponse(error)
+        errorResponse(error, res)
     }
 }
 
@@ -69,7 +69,7 @@ const login = async (req, res) => {
             token: await user.generateJWT()
         })
     } catch (error){
-        errorResponse(error)
+        errorResponse(error, res)
     }
 }
 
