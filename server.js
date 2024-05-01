@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 
 require("dotenv").config()
 
@@ -9,7 +10,7 @@ const mongoose = require("mongoose")
 const userRoute = require("./routes/userRoute")
 const laundryRouter = require("./routes/laundryRoute")
 
-app.use(express.json())
+app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
 // user route
 app.use("/api/users", userRoute)
