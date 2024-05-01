@@ -10,6 +10,7 @@ const userSchema = new Schema(
             unique: true
         },
         password: String,
+        no_hp: String,
         address: {
             type: String,
             required: false,
