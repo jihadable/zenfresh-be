@@ -5,7 +5,7 @@ const idValidation = async (req, res, next) => {
     try {
         const { id } = req.params
 
-        if (!Types.ObjectId.isValid(id)) {
+        if (!id || !Types.ObjectId.isValid(id)) {
             return res.status(400).json(
                 { 
                     status: 400, 

@@ -1,26 +1,35 @@
 const { Router } = require("express")
-const { getAllLaundries, getSingleLaundry, storeLaundry, deleteSingleLaundry, updateLaundry, deleteMultipleLaundry } = require("../controllers/laundryController")
+const { 
+    getAllLaundries, 
+    getAllLaundriesByUser, 
+    storeLaundry, 
+    deleteSingleLaundry, 
+    deleteMultipleLaundry,
+    updateLaundry
+} = require("../controllers/laundryController")
 const { extractUserId } = require("../middlewares/authMiddleware")
 const idValidation = require("../middlewares/idValidationMiddleware")
 
 const laundryRouter = Router()
 
+laundryRouter.use(extractUserId)
+
 // get all laundries
 laundryRouter.get("/", getAllLaundries)
 
-// get single laundry
-laundryRouter.get("/:id", extractUserId, idValidation, getSingleLaundry)
+// get all laundries by user
+laundryRouter.get("/byuser", getAllLaundriesByUser)
 
 // post a laundry
-laundryRouter.post("/", extractUserId, storeLaundry)
+laundryRouter.post("/", storeLaundry)
 
 // delete a laundry
-laundryRouter.delete("/:id", extractUserId, idValidation, deleteSingleLaundry)
+laundryRouter.delete("/:id", idValidation, deleteSingleLaundry)
 
 // delete multiple laundries
-laundryRouter.delete("/", extractUserId, deleteMultipleLaundry)
+laundryRouter.delete("/", deleteMultipleLaundry)
 
 // update a laundry
-laundryRouter.patch("/:id", extractUserId, idValidation, updateLaundry)
+laundryRouter.patch("/:id", idValidation, updateLaundry)
 
 module.exports = laundryRouter

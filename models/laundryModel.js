@@ -21,6 +21,7 @@ const laundrySchema = new Schema(
 // response template
 laundrySchema.methods.response = function(){
     return {
+        id: this._id,
         type: this.type,
         start_date: this.start_date,
         end_date: this.end_date,

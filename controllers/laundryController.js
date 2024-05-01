@@ -3,12 +3,34 @@ const errorResponse = require("../utils/errorResponse")
 
 // get all laundries
 const getAllLaundries = async (req, res) => {
-    
+    try {
+        const laundries = await Laundry.find().populate("user")
+
+        return res.status(200).json({
+            status: 200,
+            message: "Get all laundries successfully",
+            laundries: laundries.map(laundry => laundry.response())
+        })
+    } catch (error){
+        errorResponse(error, res)
+    }
 }
 
 // get a single laundry
-const getSingleLaundry = async (req, res) => {
-    
+const getAllLaundriesByUser = async (req, res) => {
+    try {
+        const { user_id } = req.body
+
+        const laundries = await Laundry.find({ user: user_id }).populate("user")
+
+        return res.status(200).json({
+            status: 200,
+            message: "Get all laundries by user successfully",
+            laundries: laundries.map(laundry => laundry.response())
+        })
+    } catch (error){
+        errorResponse(error, res)
+    }
 }
 
 // post a laundry
@@ -99,4 +121,4 @@ const updateLaundry = async (req, res) => {
     }
 }
 
-module.exports = { getAllLaundries, getSingleLaundry, storeLaundry, deleteSingleLaundry, deleteMultipleLaundry, updateLaundry }
+module.exports = { getAllLaundries, getAllLaundriesByUser, storeLaundry, deleteSingleLaundry, deleteMultipleLaundry, updateLaundry }

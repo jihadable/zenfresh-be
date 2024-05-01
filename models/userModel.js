@@ -10,10 +10,12 @@ const userSchema = new Schema(
             unique: true
         },
         password: String,
-        no_hp: String,
+        no_hp: {
+            type: String,
+            default: null
+        },
         address: {
             type: String,
-            required: false,
             default: null
         },
         role: String
@@ -34,6 +36,7 @@ userSchema.methods.response = function(){
     return {
         fullname: this.fullname,
         email: this.email,
+        no_hp: this.no_hp,
         address: this.address,
         role: this.role
     }
