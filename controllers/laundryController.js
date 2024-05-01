@@ -1,4 +1,5 @@
 const { Laundry } = require("../models/laundryModel")
+const errorResponse = require("../utils/errorResponse")
 
 // get all laundries
 const getAllLaundries = async (req, res) => {
@@ -22,12 +23,7 @@ const storeLaundry = async (req, res) => {
             laundry: laundry.response()
         })
     } catch (error){
-        console.log(error.message)
-
-        return res.status(500).json({
-            status: 500,
-            message: error.message
-        })
+        errorResponse(error)
     }
 }
 

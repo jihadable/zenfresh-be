@@ -19,7 +19,7 @@ const laundrySchema = new Schema(
 )
 
 // response template
-laundrySchema.methods.response = function() {
+laundrySchema.methods.response = function(){
     return {
         type: this.type,
         start_date: this.start_date,

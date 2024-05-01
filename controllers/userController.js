@@ -1,5 +1,6 @@
 const { User } = require("../models/userModel")
 const { compareSync } = require("bcrypt")
+const errorResponse = require("../utils/errorResponse")
 
 // register method
 const register = async (req, res) => {
@@ -29,12 +30,7 @@ const register = async (req, res) => {
         })
 
     } catch (error){
-        console.log(error.message)
-
-        return res.status(500).json({
-            status: 500,
-            message: error.message
-        })
+        errorResponse(error)
     }
 }
 
@@ -73,12 +69,7 @@ const login = async (req, res) => {
             token: await user.generateJWT()
         })
     } catch (error){
-        console.log(error.message)
-
-        return res.status(500).json({
-            status: 500,
-            message: error.message
-        })
+        errorResponse(error)
     }
 }
 

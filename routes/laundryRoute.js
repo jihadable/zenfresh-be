@@ -14,9 +14,9 @@ laundryRouter.get("/:id", getSingleLaundry)
 laundryRouter.post("/", extractUserId, storeLaundry)
 
 // delete a laundry
-laundryRouter.delete("/:id", deleteLaundry)
+laundryRouter.delete("/:id", extractUserId, deleteLaundry)
 
 // update a laundry
-laundryRouter.patch("/:id", updateLaundry)
+laundryRouter.patch("/:id", extractUserId, updateLaundry)
 
 module.exports = laundryRouter

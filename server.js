@@ -20,7 +20,7 @@ app.use("/api/laundries", laundryRouter)
 mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {
         app.listen(port, () => {
-            console.log("starting on port: " + port)
+            console.log("server is running on port: " + port)
         })
     })
     .catch(error => {

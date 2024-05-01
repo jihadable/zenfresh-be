@@ -29,7 +29,7 @@ userSchema.methods.generateJWT = async function(){
 }
 
 // response template
-userSchema.methods.response = function() {
+userSchema.methods.response = function(){
     return {
         fullname: this.fullname,
         email: this.email,

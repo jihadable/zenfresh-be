@@ -1,21 +1,15 @@
 const { hash } = require("bcrypt")
 const { verify } = require("jsonwebtoken")
+const errorResponse = require("../utils/errorResponse")
 
 // encrypt password method
 const encryptPassword = async (req, res, next) => {
     try {
-        const hashedPassword = await hash(req.body.password, 10)
-        
-        req.body.password = hashedPassword
+        req.body.password = await hash(req.body.password, 10)
         
         next()
     } catch (error){
-        console.error(error.message)
-
-        res.status(500).json({
-            status: 500,
-            message: "Failed to encrypt password"
-        })
+        errorResponse(error)
     }
 }
 
@@ -37,12 +31,7 @@ const extractUserId = async (req, res, next) => {
 
         next()
     } catch (error){
-        console.error(error.message)
-
-        res.status(500).json({
-            status: 500,
-            message: "Failed to get token"
-        })
+        errorResponse(error)
     }
 }
 
