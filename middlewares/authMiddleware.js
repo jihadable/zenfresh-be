@@ -1,8 +1,9 @@
 const { hash } = require("bcrypt")
+const { verify } = require("jsonwebtoken")
 
+// encrypt password method
 const encryptPassword = async (req, res, next) => {
     try {
-        // encrypt password
         const hashedPassword = await hash(req.body.password, 10)
         
         req.body.password = hashedPassword
@@ -17,8 +18,8 @@ const encryptPassword = async (req, res, next) => {
         })
     }
 }
-const { verify } = require("jsonwebtoken")
 
+// extract user_id from authorization token
 const extractUserId = async (req, res, next) => {
     try {
         const token = req.header("Authorization").split(" ")[1]
@@ -31,8 +32,6 @@ const extractUserId = async (req, res, next) => {
         }
 
         const { id } = verify(token, process.env.JWT_SECRET)
-
-        console.log(id)
 
         req.body.user_id = id
 

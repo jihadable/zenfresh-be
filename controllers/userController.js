@@ -22,7 +22,7 @@ const register = async (req, res) => {
             user: {
                 fullname: user.fullname,
                 email: user.email,
-                alamat: user.alamat,
+                address: user.address,
                 role: user.role
             },
             token: await user.generateJWT()
@@ -67,7 +67,7 @@ const login = async (req, res) => {
             user: {
                 fullname: user.fullname,
                 email: user.email,
-                alamat: user.alamat,
+                address: user.address,
                 role: user.role
             },
             token: await user.generateJWT()

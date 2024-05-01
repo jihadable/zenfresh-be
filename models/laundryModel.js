@@ -1,39 +1,34 @@
-const { Schema, model } = require("mongoose")
+const { Schema, Types, model } = require("mongoose")
 
 const laundrySchema = new Schema(
     {
-        user_id: {
-            type: Schema.Types.ObjectId,
-            required: true
-        },
-        type: {
-            type: String,
-            required: true
-        },
-        payment_method: {
-            type: String,
-            required: true
-        },
-        start_date: {
-            type: String,
-            required: true
-        },
-        end_date: {
-            type: String,
-            required: false
-        },
-        is_paid: {
-            type: Boolean,
-            required: true
-        },
-        is_finish: {
-            type: Boolean,
-            required: true
+        type: String,
+        start_date: String,
+        end_date: String,
+        payment_method: String,
+        is_paid: Boolean,
+        is_finish: Boolean,
+        user: {
+            type: Types.ObjectId,
+            ref: "User"
         }
     },
     {
         collection: "laundries"
     }
 )
+
+// response template
+laundrySchema.methods.response = function() {
+    return {
+        type: this.type,
+        start_date: this.start_date,
+        end_date: this.end_date,
+        payment_method: this.payment_method,
+        is_paid: this.is_paid,
+        is_finish: this.is_finish,
+        user: this.user.response()
+    }
+}
 
 module.exports = { Laundry: model("Laundry", laundrySchema) }

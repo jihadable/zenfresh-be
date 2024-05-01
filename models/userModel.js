@@ -4,27 +4,18 @@ const { sign } = require("jsonwebtoken")
 // user schema
 const userSchema = new Schema(
     {
-        fullname: {
-            type: String,
-            required: true
-        },
+        fullname: String,
         email: {
             type: String,
-            required: true,
             unique: true
         },
-        password: {
-            type: String,
-            required: true
-        },
+        password: String,
         address: {
             type: String,
-            required: false
+            required: false,
+            default: null
         },
-        role: {
-            type: String,
-            required: true
-        }
+        role: String
     }, 
     { 
         timestamps: true,
@@ -32,8 +23,19 @@ const userSchema = new Schema(
     }
 )
 
+// generate token
 userSchema.methods.generateJWT = async function(){
     return await sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: "30d" })
+}
+
+// response template
+userSchema.methods.response = function() {
+    return {
+        fullname: this.fullname,
+        email: this.email,
+        address: this.address,
+        role: this.role
+    }
 }
 
 module.exports = { User: model("User", userSchema) }

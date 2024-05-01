@@ -1,5 +1,4 @@
 const { Laundry } = require("../models/laundryModel")
-const { User } = require("../models/userModel")
 
 // get all laundries
 const getAllLaundries = async (req, res) => {
@@ -8,24 +7,19 @@ const getAllLaundries = async (req, res) => {
 
 // get a single laundry
 const getSingleLaundry = async (req, res) => {
-
+    
 }
 
 // post a laundry
 const storeLaundry = async (req, res) => {
     try {
-        const laundry = await Laundry.create({ ...req.body })
-        const user = await User.findById(req.body.user_id)
+        const { user_id } = req.body
+        const laundry = await (await Laundry.create({ ...req.body, user: user_id })).populate("user")
 
         return res.status(201).json({
             status: 201,
             message: "Laundry created",
-            laundry: {
-                type: laundry.type,
-                user: {
-                    fullname: user.fullname
-                }
-            }
+            laundry: laundry.response()
         })
     } catch (error){
         console.log(error.message)
