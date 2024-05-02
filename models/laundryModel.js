@@ -2,12 +2,23 @@ const { Schema, Types, model } = require("mongoose")
 
 const laundrySchema = new Schema(
     {
-        type: String,
+        category: String,
         start_date: String,
-        end_date: String,
+        end_date: {
+            type: String,
+            default: null
+        },
+        is_self_drop: Boolean,
+        is_self_pickup: Boolean,
+        is_paid: {
+            type: Boolean,
+            default: false
+        },
+        is_finish: {
+            type: Boolean,
+            default: false
+        },
         payment_method: String,
-        is_paid: Boolean,
-        is_finish: Boolean,
         user: {
             type: Types.ObjectId,
             ref: "User"
@@ -22,12 +33,14 @@ const laundrySchema = new Schema(
 laundrySchema.methods.response = function(){
     return {
         id: this._id,
-        type: this.type,
+        category: this.category,
         start_date: this.start_date,
         end_date: this.end_date,
-        payment_method: this.payment_method,
+        is_self_drop: this.is_self_drop,
+        is_self_pickup: this.is_self_pickup,
         is_paid: this.is_paid,
         is_finish: this.is_finish,
+        payment_method: this.payment_method,
         user: this.user.response()
     }
 }
