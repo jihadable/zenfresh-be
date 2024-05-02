@@ -1,6 +1,7 @@
 const { User } = require("../models/userModel")
 const { compareSync } = require("bcrypt")
-const errorResponse = require("../utils/errorResponse")
+const serverErrorResponse = require("../utils/serverErrorResponse")
+const defaultResponse = require("../utils/defaultResponse")
 
 // register method
 const register = async (req, res) => {
@@ -9,28 +10,19 @@ const register = async (req, res) => {
 
         // user have already registered
         if (user){
-            return res.status(400).json({
-                status: 400,
-                message: "User have already registered"
-            })
+            return res.status(400).json(defaultResponse(400, false, "User have already registered"))
         }
 
         user = await User.create({ ...req.body })
     
         return res.status(201).json({
-            status: 201,
-            message: "User registered",
-            user: {
-                fullname: user.fullname,
-                email: user.email,
-                address: user.address,
-                role: user.role
-            },
+            ...defaultResponse(201, true, "User registered"),
+            user: user.response(),
             token: await user.generateJWT()
         })
 
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
@@ -43,33 +35,21 @@ const login = async (req, res) => {
 
         // there is no such user
         if (!user){
-            return res.status(404).json({
-                status: 404,
-                message: "Resource not found"
-            })
+            return res.status(401).json(defaultResponse(401, false, "Invalid email or password"))
         }
 
         // wrong password
         if (!compareSync(password, user.password)){
-            return res.status(401).json({
-                status: 401,
-                message: "Invalid email or password"
-            })
+            return res.status(401).json(defaultResponse(401, false, "Invalid email or password"))
         }
 
         return res.status(202).json({
-            status: 202,
-            message: "Login successfully",
-            user: {
-                fullname: user.fullname,
-                email: user.email,
-                address: user.address,
-                role: user.role
-            },
+            ...defaultResponse(202, true, "User Logged in successfully"),
+            user: user.response(),
             token: await user.generateJWT()
         })
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 

@@ -1,22 +1,18 @@
 const { Types } = require("mongoose");
-const errorResponse = require("../utils/errorResponse")
+const serverErrorResponse = require("../utils/serverErrorResponse");
+const defaultResponse = require("../utils/defaultResponse");
 
 const idValidation = async (req, res, next) => {
     try {
         const { id } = req.params
 
         if (!id || !Types.ObjectId.isValid(id)) {
-            return res.status(400).json(
-                { 
-                    status: 400, 
-                    message: 'Invalid ID' 
-                }
-            )
+            return res.status(400).json(defaultResponse(400, false, "Invalid ID"))
         }
 
         next()
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 

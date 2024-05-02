@@ -1,5 +1,6 @@
 const { Laundry } = require("../models/laundryModel")
-const errorResponse = require("../utils/errorResponse")
+const defaultResponse = require("../utils/defaultResponse")
+const serverErrorResponse = require("../utils/serverErrorResponse")
 
 // get all laundries
 const getAllLaundries = async (req, res) => {
@@ -7,12 +8,11 @@ const getAllLaundries = async (req, res) => {
         const laundries = await Laundry.find().populate("user")
 
         return res.status(200).json({
-            status: 200,
-            message: "Get all laundries successfully",
+            ...defaultResponse(200, true, "Get all laundries successfully"),
             laundries: laundries.map(laundry => laundry.response())
         })
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
@@ -24,12 +24,11 @@ const getAllLaundriesByUser = async (req, res) => {
         const laundries = await Laundry.find({ user: user_id }).populate("user")
 
         return res.status(200).json({
-            status: 200,
-            message: "Get all laundries by user successfully",
+            ...defaultResponse(200, true, "Get all laundries by user successfully"),
             laundries: laundries.map(laundry => laundry.response())
         })
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
@@ -42,12 +41,11 @@ const storeLaundry = async (req, res) => {
         await laundry.populate("user")
 
         return res.status(201).json({
-            status: 201,
-            message: "Laundry created successfully",
+            ...defaultResponse(201, true, "Laundry created successfully"),
             laundry: laundry.response()
         })
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
@@ -59,18 +57,12 @@ const deleteSingleLaundry = async (req, res) => {
         const deletedLaundry = await Laundry.findByIdAndDelete(id)
 
         if (!deletedLaundry){
-            return res.status(404).json({
-                status: 404,
-                message: "No laundry found with the provided ID"
-            })
+            return res.status(404).json(defaultResponse(404, false, "No laundry found with the provided ID"))
         }
 
-        return res.status(200).json({
-            status: 200,
-            message: "Laundry deleted successfully"
-        })
+        return res.status(200).json(defaultResponse(200, true, "Laundry deleted successfully"))
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
@@ -82,18 +74,12 @@ const deleteMultipleLaundry = async (req, res) => {
         const deletedLaundry = await Laundry.deleteMany({ _id: { $in: ids }})
 
         if (deletedLaundry.deletedCount === 0){
-            return res.status(404).json({
-                status: 404,
-                message: "No laundries found with the provided IDs"
-            })
+            return res.status(404).json(defaultResponse(404, false, "No laundries found with the provided IDs"))
         }
 
-        return res.status(200).json({
-            status: 200,
-            message: "Laundries deleted successfully"
-        })
+        return res.status(200).json(defaultResponse(200, true, "Laundries deleted successfully"))
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     } 
 }
 
@@ -105,19 +91,15 @@ const updateLaundry = async (req, res) => {
         const updatedLaundry = await Laundry.findByIdAndUpdate(id, { ...req.body }, { new: true }).populate("user")
 
         if (!updatedLaundry){
-            return res.status(404).json({
-                status: 404,
-                message: "No laundry found with the provided ID"
-            })
+            return res.status(404).json(defaultResponse(404, false, "No laundry found with the provided ID"))
         }
 
         return res.status(200).json({
-            status: 200,
-            message: "Laundry updated successfully",
+            ...defaultResponse(200, true, "Laundry updated successfully"),
             laundry: updatedLaundry.response()
         })
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 

@@ -1,6 +1,7 @@
 const { hash } = require("bcrypt")
 const { verify } = require("jsonwebtoken")
-const errorResponse = require("../utils/errorResponse")
+const serverErrorResponse = require("../utils/serverErrorResponse")
+const defaultResponse = require("../utils/defaultResponse")
 
 // encrypt password method
 const encryptPassword = async (req, res, next) => {
@@ -9,7 +10,7 @@ const encryptPassword = async (req, res, next) => {
         
         next()
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
@@ -19,10 +20,7 @@ const extractUserId = async (req, res, next) => {
         const authorization = req.header("Authorization")
 
         if (!authorization){
-            return res.status(401).json({
-                status: 401,
-                message: "Token not provided"
-            })
+            return res.status(401).json(defaultResponse(401, false, "Token not provided"))
         }
 
         const token = authorization.split(" ")[1]
@@ -33,7 +31,7 @@ const extractUserId = async (req, res, next) => {
 
         next()
     } catch (error){
-        errorResponse(error, res)
+        serverErrorResponse(error, res)
     }
 }
 
