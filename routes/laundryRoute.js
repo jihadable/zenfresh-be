@@ -7,18 +7,18 @@ const {
     deleteMultipleLaundry,
     updateLaundry
 } = require("../controllers/laundryController")
-const { extractUserId } = require("../middlewares/authMiddleware")
+const { verifyToken } = require("../middlewares/authMiddleware")
 const idValidation = require("../middlewares/idValidationMiddleware")
 
 const laundryRouter = Router()
 
-laundryRouter.use(extractUserId)
+laundryRouter.use(verifyToken)
 
 // get all laundries
 laundryRouter.get("/", getAllLaundries)
 
 // get all laundries by user
-laundryRouter.get("/byuser", getAllLaundriesByUser)
+laundryRouter.get("/by-user", getAllLaundriesByUser)
 
 // post a laundry
 laundryRouter.post("/", storeLaundry)

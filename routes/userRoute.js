@@ -1,8 +1,11 @@
 const { Router } = require("express")
-const { register, login } = require("../controllers/userController")
-const { encryptPassword } = require("../middlewares/authMiddleware")
+const { register, login, userProfile } = require("../controllers/userController")
+const { encryptPassword, verifyToken } = require("../middlewares/authMiddleware")
 
 const userRouter = Router()
+
+// user profile route
+userRouter.get("/user-profile", verifyToken, userProfile)
 
 // register route
 userRouter.post("/register", encryptPassword, register)

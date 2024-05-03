@@ -16,7 +16,7 @@ const getAllLaundries = async (req, res) => {
     }
 }
 
-// get a single laundry
+// get all laundries by user
 const getAllLaundriesByUser = async (req, res) => {
     try {
         const { user_id } = req.body

@@ -15,24 +15,25 @@ const encryptPassword = async (req, res, next) => {
 }
 
 // extract user_id from authorization token
-const extractUserId = async (req, res, next) => {
+const verifyToken = async (req, res, next) => {
     try {
         const authorization = req.header("Authorization")
 
         if (!authorization){
             return res.status(401).json(defaultResponse(401, false, "Token not provided"))
         }
-
+        
         const token = authorization.split(" ")[1]
-
+        
         const { id } = verify(token, process.env.JWT_SECRET)
 
         req.body.user_id = id
 
         next()
     } catch (error){
+        console.log("error")
         serverErrorResponse(error, res)
     }
 }
 
-module.exports = { encryptPassword, extractUserId }
+module.exports = { encryptPassword, verifyToken }
