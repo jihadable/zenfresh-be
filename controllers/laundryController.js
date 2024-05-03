@@ -16,34 +16,13 @@ const getAllLaundries = async (req, res) => {
     }
 }
 
-// get all laundries by user
-const getAllLaundriesByUser = async (req, res) => {
-    try {
-        const { user_id } = req.body
-
-        const laundries = await Laundry.find({ user: user_id }).populate("user")
-
-        return res.status(200).json({
-            ...defaultResponse(200, true, "Get all laundries by user successfully"),
-            laundries: laundries.map(laundry => laundry.response())
-        })
-    } catch (error){
-        serverErrorResponse(error, res)
-    }
-}
-
 // post a laundry
 const storeLaundry = async (req, res) => {
     try {
         const { user_id } = req.body
-        const laundry = await Laundry.create({ ...req.body, user: user_id })
+        await Laundry.create({ ...req.body, user: user_id })
 
-        await laundry.populate("user")
-
-        return res.status(201).json({
-            ...defaultResponse(201, true, "Laundry created successfully"),
-            laundry: laundry.response()
-        })
+        return res.status(201).json(defaultResponse(201, true, "Laundry created successfully"))
     } catch (error){
         serverErrorResponse(error, res)
     }
@@ -94,13 +73,10 @@ const updateLaundry = async (req, res) => {
             return res.status(404).json(defaultResponse(404, false, "No laundry found with the provided ID"))
         }
 
-        return res.status(200).json({
-            ...defaultResponse(200, true, "Laundry updated successfully"),
-            laundry: updatedLaundry.response()
-        })
+        return res.status(200).json(defaultResponse(200, true, "Laundry updated successfully"))
     } catch (error){
         serverErrorResponse(error, res)
     }
 }
 
-module.exports = { getAllLaundries, getAllLaundriesByUser, storeLaundry, deleteSingleLaundry, deleteMultipleLaundry, updateLaundry }
+module.exports = { getAllLaundries, storeLaundry, deleteSingleLaundry, deleteMultipleLaundry, updateLaundry }
