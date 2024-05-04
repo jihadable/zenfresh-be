@@ -13,7 +13,7 @@ app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
 app.get("/", (req, res) => {
     res.json({
-        "status": "ok"
+        status: "ok"
     })
 })
 
@@ -22,12 +22,6 @@ app.use("/api/users", userRoute)
 
 // laundry route
 app.use("/api/laundries", laundryRouter)
-
-app.get("/api/bro", (req, res) => {
-    res.json({
-        "status": "ok"
-    })
-})
 
 mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {
