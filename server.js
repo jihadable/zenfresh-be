@@ -25,6 +25,7 @@ app.use("/api/laundries", laundryRouter)
 
 mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {
+        console.log("connect to mongodb")
         app.listen(port, () => {
             console.log("server is running on port: " + port)
         })
@@ -32,3 +33,5 @@ mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .catch(error => {
         console.log(error)
     })
+
+module.exports = app
