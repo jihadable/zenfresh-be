@@ -9,7 +9,7 @@ require("dotenv").config()
 const app = express()
 const port = process.env.PORT
 
-app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
+app.use(cors(), express.json())
 
 // user route
 app.use("/api/users", userRouter)

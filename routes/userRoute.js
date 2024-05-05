@@ -10,12 +10,6 @@ userRouter.get("/", verifyToken, getUserProfile)
 // register route
 userRouter.post("/register", encryptPassword, register)
 
-userRouter.post("/bro", (req, res) => {
-    res.json({
-        status: "ok"
-    })
-})
-
 // login route
 userRouter.post("/login", login)
 
