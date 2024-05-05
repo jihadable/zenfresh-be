@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require("cors")
 const serverless = require('serverless-http');
 const userRouter = require('../routes/userRoute');
+const laundryRouter = require("./routes/laundryRoute")
+
 const app = express();
 const router = express.Router();
 
