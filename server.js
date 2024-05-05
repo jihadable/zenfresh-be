@@ -1,8 +1,8 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
-const userRoute = require("./routes/userRoute")
 const laundryRouter = require("./routes/laundryRoute")
+const userRouter = require("./routes/userRoute")
 
 require("dotenv").config()
 
@@ -11,12 +11,8 @@ const port = 8000
 
 app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
-app.get("/", (req, res) => {
-    res.send("Hello")
-})
-
 // user route
-app.use("/api/users", userRoute)
+app.use("/api/users", userRouter)
 
 // laundry route
 app.use("/api/laundries", laundryRouter)

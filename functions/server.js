@@ -4,40 +4,20 @@ const userRouter = require('../routes/userRoute');
 const app = express();
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('App is running..');
-});
+require("dotenv").config()
 
-router.post('/add', (req, res) => {
-  res.send('New record added.');
-});
+app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
-router.delete('/', (req, res) => {
-  res.send('Deleted existing record');
-});
+router.get("/", (req, res) => {
+    res.send("Hello")
+})
 
-router.put('/', (req, res) => {
-  res.send('Updating existing record');
-});
-
-router.get('/demo', (req, res) => {
-  res.json([
-    {
-      id: '001',
-      name: 'Aayush',
-    },
-    {
-      id: '002',
-      name: 'rohit',
-    },
-    {
-      id: '003',
-      name: 'Mohit',
-    },
-  ]);
-});
-
+// user route
 router.use("/api/users", userRouter)
 
+// laundry route
+router.use("/api/laundries", laundryRouter)
+
 app.use('/', router);
+
 module.exports.handler = serverless(app);
