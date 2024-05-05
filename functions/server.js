@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose")
 const cors = require("cors")
 const serverless = require('serverless-http');
 const userRouter = require('../routes/userRoute');
@@ -22,5 +23,16 @@ router.use("/api/users", userRouter)
 router.use("/api/laundries", laundryRouter)
 
 app.use('/', router);
+
+mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
+    .then(() => {
+        console.log("connect to mongodb")
+        // app.listen(port, () => {
+        //     console.log("server is running on port: " + port)
+        // })
+    })
+    .catch(error => {
+        console.log(error)
+    })
 
 module.exports.handler = serverless(app);
