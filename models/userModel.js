@@ -28,7 +28,7 @@ const userSchema = new Schema(
 
 // generate token
 userSchema.methods.generateJWT = async function(){
-    return await sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: "30d" })
+    return await sign({ id: this._id }, "zenfresh", { expiresIn: "30d" })
 }
 
 // response template
