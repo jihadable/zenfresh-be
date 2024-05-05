@@ -33,3 +33,5 @@ mongoose.connect("mongodb+srv://jihadable:Terserah1!@mern.eprwhpx.mongodb.net/?r
     .catch(error => {
         console.log(error)
     })
+
+module.exports = app
