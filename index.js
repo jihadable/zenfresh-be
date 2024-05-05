@@ -16,6 +16,10 @@ router.get("/", (req, res) => {
     res.send("Hallo")
 })
 
+router.post("/", (req, res) => {
+    res.json(req.body)
+})
+
 // user route
 router.use("/api/users", userRouter)
 
