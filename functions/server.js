@@ -27,9 +27,9 @@ app.use("/", router);
 mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {
         console.log("connect to mongodb")
-        app.listen(port, () => {
-            console.log("server is running on port: " + port)
-        })
+        // app.listen(port, () => {
+        //     console.log("server is running on port: " + port)
+        // })
     })
     .catch(error => {
         console.log(error)
