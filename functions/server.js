@@ -1,42 +1,38 @@
-const express = require('express');
-const serverless = require('serverless-http');
-const app = express();
-const router = express.Router();
+const express = require("express")
+const mongoose = require("mongoose")
+const cors = require("cors")
+const userRoute = require("./routes/userRoute")
+const laundryRouter = require("./routes/laundryRoute")
 
-let records = [];
+require("dotenv").config()
 
-router.get('/', (req, res) => {
-  res.send('App is running..');
-});
+const app = express()
+const router = express.Router()
+const port = 8000
 
-router.post('/add', (req, res) => {
-  res.send('New record added.');
-});
+app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
-router.delete('/', (req, res) => {
-  res.send('Deleted existing record');
-});
+router.get("/", (req, res) => {
+    res.send("Hello")
+})
 
-router.put('/', (req, res) => {
-  res.send('Updating existing record');
-});
+// user route
+router.use("/api/users", userRoute)
 
-router.get('/demo', (req, res) => {
-  res.json([
-    {
-      id: '001',
-      name: 'Aayush',
-    },
-    {
-      id: '002',
-      name: 'rohit',
-    },
-    {
-      id: '003',
-      name: 'Mohit',
-    },
-  ]);
-});
+// laundry route
+router.use("/api/laundries", laundryRouter)
 
 app.use("/", router);
+
+mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
+    .then(() => {
+        console.log("connect to mongodb")
+        app.listen(port, () => {
+            console.log("server is running on port: " + port)
+        })
+    })
+    .catch(error => {
+        console.log(error)
+    })
+
 module.exports.handler = serverless(app);
