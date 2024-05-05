@@ -4,6 +4,10 @@ const { encryptPassword, verifyToken } = require("../middlewares/authMiddleware"
 
 const userRouter = Router()
 
+userRouter.get("/halo", (req, res) => {
+    res.send("Hallo")
+})
+
 // user profile route
 userRouter.get("/", verifyToken, getUserProfile)
 

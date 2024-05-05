@@ -1,10 +1,8 @@
 const express = require('express');
 const serverless = require('serverless-http');
+const userRouter = require('../routes/userRoute');
 const app = express();
 const router = express.Router();
-
-let records = [];
-
 
 router.get('/', (req, res) => {
   res.send('App is running..');
@@ -22,7 +20,6 @@ router.put('/', (req, res) => {
   res.send('Updating existing record');
 });
 
-
 router.get('/demo', (req, res) => {
   res.json([
     {
@@ -39,6 +36,8 @@ router.get('/demo', (req, res) => {
     },
   ]);
 });
+
+router.use("/api/users", userRouter)
 
 app.use('/', router);
 module.exports.handler = serverless(app);
