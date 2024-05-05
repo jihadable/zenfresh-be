@@ -1,5 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const serverless = require("serverless-http")
 const cors = require("cors")
 const userRoute = require("./routes/userRoute")
 const laundryRouter = require("./routes/laundryRoute")
@@ -33,3 +34,5 @@ mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .catch(error => {
         console.log(error)
     })
+
+module.exports.handler = app
