@@ -11,6 +11,10 @@ const port = process.env.PORT
 
 app.use(cors(), express.json())
 
+app.get("/", (req, res) => {
+    res.send("Hallo")
+})
+
 // user route
 app.use("/api/users", userRouter)
 
