@@ -35,4 +35,4 @@ mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
         console.log(error)
     })
 
-module.exports.handler = app
+module.exports.handler = serverless(api)
