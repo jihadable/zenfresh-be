@@ -7,19 +7,22 @@ const userRouter = require("./routes/userRoute")
 require("dotenv").config()
 
 const app = express()
+const router = express.Router()
 const port = 8000
 
 app.use(cors(), express.json())
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
     res.send("Hallo")
 })
 
 // user route
-app.use("/api/users", userRouter)
+router.use("/api/users", userRouter)
 
 // laundry route
-app.use("/api/laundries", laundryRouter)
+router.use("/api/laundries", laundryRouter)
+
+app.use("/", router)
 
 mongoose.connect("mongodb+srv://jihadable:Terserah1!@mern.eprwhpx.mongodb.net/?retryWrites=true&w=majority&appName=MERN", { dbName: "zenfresh" })
     .then(() => {
