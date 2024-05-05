@@ -8,21 +8,22 @@ const laundryRouter = require("./routes/laundryRoute")
 require("dotenv").config()
 
 const app = express()
+const router = express.Router()
 const port = 8000
 
 app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
-app.get("/", (req, res) => {
-    res.json({
-        status: "ok"
-    })
+router.get("/", (req, res) => {
+    res.send("Hello")
 })
 
 // user route
-app.use("/api/users", userRoute)
+router.use("/api/users", userRoute)
 
 // laundry route
-app.use("/api/laundries", laundryRouter)
+router.use("/api/laundries", laundryRouter)
+
+app.use("/", router)
 
 mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {

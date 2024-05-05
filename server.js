@@ -12,9 +12,7 @@ const port = 8000
 app.use(cors({ origin: process.env.FRONTEND_ENDPOINT }), express.json())
 
 app.get("/", (req, res) => {
-    res.json({
-        status: "ok"
-    })
+    res.send("Hello")
 })
 
 // user route
