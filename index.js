@@ -9,7 +9,7 @@ require("dotenv").config()
 
 const app = express()
 const router = express.Router()
-const port = 8000
+const port = process.env.PORT
 
 // middlewares
 app.use(cors(), express.json(), express.static("views"))
@@ -35,7 +35,7 @@ app.use((req, res) => {
     res.sendFile(path.join(__dirname, "views", "not-found.html"))
 })
 
-mongoose.connect("mongodb+srv://jihadable:Terserah1!@mern.eprwhpx.mongodb.net/?retryWrites=true&w=majority&appName=MERN", { dbName: "zenfresh" })
+mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {
         app.listen(port, () => {
             console.log("Server is running on port: " + port)
