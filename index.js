@@ -12,8 +12,7 @@ const router = express.Router()
 const port = 8000
 
 // middlewares
-app.use(cors(), express.json(), express.static("views"))
-app.use("/styles", express.static("styles"));
+app.use(cors(), express.json(), express.static("views"), express.static("styles"))
 
 router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
