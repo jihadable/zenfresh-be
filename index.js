@@ -12,7 +12,7 @@ const router = express.Router()
 const port = 8000
 
 // middlewares
-app.use(cors(), express.json(), express.static("views"), express.static("styles"))
+app.use(cors(), express.json(), express.static("views"))
 
 router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
@@ -32,7 +32,7 @@ app.use("/", router)
 
 // route not found
 app.use((req, res) => {
-    res.status(404).sendFile(path.join(__dirname, "views", "not-found.html"))
+    res.sendFile(path.join(__dirname, "views", "not-found.html"))
 })
 
 mongoose.connect("mongodb+srv://jihadable:Terserah1!@mern.eprwhpx.mongodb.net/?retryWrites=true&w=majority&appName=MERN", { dbName: "zenfresh" })
