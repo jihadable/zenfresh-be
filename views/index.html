@@ -38,6 +38,7 @@
             .title {
                 font-size: 2.5rem;
                 font-weight: bold;
+                text-align: center;
             }
             
             .tech-stack {
@@ -79,11 +80,21 @@
                 }
             }
         }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 0 1rem;
+            }
+
+            .container {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="title">Zenfresh</div>
+        <div class="title">Zenfresh Backend</div>
         <div class="tech-stack">
             <div class="tech-stack-title">Teck stack</div>
             <ul>
