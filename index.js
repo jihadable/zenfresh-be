@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const cors = require("cors")
 const laundryRouter = require("./routes/laundryRoute")
 const userRouter = require("./routes/userRoute")
+const path = require("path")
 
 require("dotenv").config()
 
@@ -10,10 +11,12 @@ const app = express()
 const router = express.Router()
 const port = 8000
 
-app.use(cors(), express.json())
+// middlewares
+app.use(cors(), express.json(), express.static("views"))
+app.use("/styles", express.static("styles"));
 
 router.get("/", (req, res) => {
-    res.send("Hallo")
+    res.sendFile(path.join(__dirname, "views", "index.html"))
 })
 
 router.post("/", (req, res) => {
@@ -27,6 +30,11 @@ router.use("/api/users", userRouter)
 router.use("/api/laundries", laundryRouter)
 
 app.use("/", router)
+
+// route not found
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, "views", "not-found.html"))
+})
 
 mongoose.connect("mongodb+srv://jihadable:Terserah1!@mern.eprwhpx.mongodb.net/?retryWrites=true&w=majority&appName=MERN", { dbName: "zenfresh" })
     .then(() => {
