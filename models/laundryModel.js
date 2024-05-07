@@ -19,6 +19,10 @@ const laundrySchema = new Schema(
             default: false
         },
         payment_method: String,
+        total: {
+            type: Number,
+            default: null
+        },
         user: {
             type: Types.ObjectId,
             ref: "User"
@@ -41,6 +45,7 @@ laundrySchema.methods.response = function(){
         is_paid: this.is_paid,
         is_finish: this.is_finish,
         payment_method: this.payment_method,
+        total: this.total,
         user: this.user.response()
     }
 }
