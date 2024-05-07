@@ -29,6 +29,7 @@ const laundrySchema = new Schema(
         }
     },
     {
+        timestamps: true,
         collection: "laundries"
     }
 )
