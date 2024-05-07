@@ -15,7 +15,14 @@ const getUserProfile = async (req, res) => {
             return res.status(401).json(defaultResponse(401, false, "Invalid token"))
         }
 
-        const laundries = await Laundry.find({ user: user_id }).populate("user")
+        let laundries
+
+        if (user.role === "admin"){
+            laundries = await Laundry.find().populate("user")
+        }
+        else {
+            laundries = await Laundry.find({ user: user_id }).populate("user")
+        }
 
         return res.status(200).json({
             ...defaultResponse(200, true, "Get user profile successfully"),
