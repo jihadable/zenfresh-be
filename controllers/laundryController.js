@@ -67,7 +67,7 @@ const updateLaundry = async (req, res) => {
     try {
         const { id } = req.params
     
-        const updatedLaundry = await Laundry.findByIdAndUpdate(id, { ...req.body }, { new: true }).populate("user")
+        const updatedLaundry = await Laundry.findByIdAndUpdate(id, { ...req.body }).populate("user")
 
         if (!updatedLaundry){
             return res.status(404).json(defaultResponse(404, false, "No laundry found with the provided ID"))
