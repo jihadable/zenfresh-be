@@ -21,7 +21,7 @@ const getUserProfile = async (req, res) => {
             laundries = await Laundry.find().sort({ createdAt: -1 }).populate("user")
         }
         else {
-            laundries = await Laundry.find({ user: user_id }).populate("user")
+            laundries = await Laundry.find({ user: user_id }).sort({ createdAt: -1 }).populate("user")
         }
 
         return res.status(200).json({
