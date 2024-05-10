@@ -8,8 +8,6 @@ const laundrySchema = new Schema(
             type: String,
             default: null
         },
-        is_self_drop: Boolean,
-        is_self_pickup: Boolean,
         is_paid: {
             type: Boolean,
             default: false
@@ -41,8 +39,6 @@ laundrySchema.methods.response = function(){
         category: this.category,
         start_date: this.start_date,
         end_date: this.end_date,
-        is_self_drop: this.is_self_drop,
-        is_self_pickup: this.is_self_pickup,
         is_paid: this.is_paid,
         is_finish: this.is_finish,
         payment_method: this.payment_method,
