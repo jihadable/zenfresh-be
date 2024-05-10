@@ -46,21 +46,21 @@ const deleteSingleLaundry = async (req, res) => {
 }
 
 // delete multiple laundries
-const deleteMultipleLaundry = async (req, res) => {
-    try {
-        const { ids } = req.body
+// const deleteMultipleLaundry = async (req, res) => {
+//     try {
+//         const { ids } = req.body
 
-        const deletedLaundry = await Laundry.deleteMany({ _id: { $in: ids }})
+//         const deletedLaundry = await Laundry.deleteMany({ _id: { $in: ids }})
 
-        if (deletedLaundry.deletedCount === 0){
-            return res.status(404).json(defaultResponse(404, false, "No laundries found with the provided IDs"))
-        }
+//         if (deletedLaundry.deletedCount === 0){
+//             return res.status(404).json(defaultResponse(404, false, "No laundries found with the provided IDs"))
+//         }
 
-        return res.status(200).json(defaultResponse(200, true, "Laundries deleted successfully"))
-    } catch (error){
-        serverErrorResponse(error, res)
-    } 
-}
+//         return res.status(200).json(defaultResponse(200, true, "Laundries deleted successfully"))
+//     } catch (error){
+//         serverErrorResponse(error, res)
+//     } 
+// }
 
 // update a laundry
 const updateLaundry = async (req, res) => {
@@ -79,4 +79,4 @@ const updateLaundry = async (req, res) => {
     }
 }
 
-module.exports = { getAllLaundries, storeLaundry, deleteSingleLaundry, deleteMultipleLaundry, updateLaundry }
+module.exports = { getAllLaundries, storeLaundry, deleteSingleLaundry, updateLaundry }
