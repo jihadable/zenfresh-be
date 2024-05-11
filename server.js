@@ -18,10 +18,6 @@ router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
 })
 
-router.post("/", (req, res) => {
-    res.json(req.body)
-})
-
 // user route
 router.use("/api/users", userRouter)
 
@@ -38,7 +34,7 @@ app.use((req, res) => {
 mongoose.connect(process.env.MONGO_URI, { dbName: "zenfresh" })
     .then(() => {
         app.listen(port, () => {
-            console.log("Server is running on port: " + port)
+            console.log("Server is running")
         })
     })
     .catch(error => {
