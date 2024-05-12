@@ -13,7 +13,7 @@ const port = process.env.PORT
 
 // middlewares
 app.use(cors(), express.json(), express.static("views"))
-app.use("/styles", express.static(path.join(__dirname, "styles")))
+// app.use("/styles", express.static(path.join(__dirname, "styles")))
 
 router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
