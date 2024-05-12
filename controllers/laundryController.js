@@ -48,4 +48,4 @@ const updateLaundry = async (req, res) => {
     }
 }
 
-module.exports = { getAllLaundries, storeLaundry, deleteSingleLaundry, updateLaundry }
+module.exports = { storeLaundry, deleteSingleLaundry, updateLaundry }
