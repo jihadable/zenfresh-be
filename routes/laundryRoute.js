@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const { getAllLaundries, storeLaundry, deleteSingleLaundry, updateLaundry } = require("../controllers/laundryController")
+const { storeLaundry, deleteSingleLaundry, updateLaundry } = require("../controllers/laundryController")
 const { verifyToken } = require("../middlewares/authMiddleware")
 const idValidation = require("../middlewares/idValidationMiddleware")
 
