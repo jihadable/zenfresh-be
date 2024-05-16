@@ -20,7 +20,10 @@ const laundrySchema = new Schema(
             default: false
         },
         payment_method: String,
-        weight: Number,
+        weight: {
+            type: Number,
+            default: null
+        },
         user: {
             type: Types.ObjectId,
             ref: "User"

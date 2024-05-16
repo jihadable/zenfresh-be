@@ -18,10 +18,10 @@ const getUserProfile = async (req, res) => {
         let laundries
 
         if (user.role === "admin"){
-            laundries = await Laundry.find().sort({ createdAt: -1 }).populate("user")
+            laundries = await Laundry.find().sort({ createdAt: -1 }).populate("user").populate("category")
         }
         else {
-            laundries = await Laundry.find({ user: user_id }).sort({ createdAt: -1 }).populate("user")
+            laundries = await Laundry.find({ user: user_id }).sort({ createdAt: -1 }).populate("user").populate("category")
         }
 
         return res.status(200).json({
