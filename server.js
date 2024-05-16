@@ -4,6 +4,7 @@ const cors = require("cors")
 const laundryRouter = require("./routes/laundryRoute")
 const userRouter = require("./routes/userRoute")
 const path = require("path")
+const categoryRouter = require("./routes/categoryRoute")
 
 require("dotenv").config()
 
@@ -18,6 +19,9 @@ app.use("/styles", express.static(path.join(__dirname, "styles")))
 router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
 })
+
+// category route
+router.use("/api/categories", categoryRouter)
 
 // user route
 router.use("/api/users", userRouter)
