@@ -15,11 +15,11 @@ const laundrySchema = new Schema(
             type: Boolean,
             default: false
         },
-        is_finish: {
-            type: Boolean,
-            default: false
+        status: String,
+        payment_method: {
+            type: String,
+            default: null
         },
-        payment_method: String,
         weight: {
             type: Number,
             default: null
@@ -43,7 +43,7 @@ laundrySchema.methods.response = function(){
         start_date: this.start_date,
         end_date: this.end_date,
         is_paid: this.is_paid,
-        is_finish: this.is_finish,
+        status: this.status,
         payment_method: this.payment_method,
         weight: this.weight,
         user: this.user.response()
