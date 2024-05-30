@@ -9,27 +9,24 @@ const categoryRouter = require("./routes/categoryRoute")
 require("dotenv").config()
 
 const app = express()
-const router = express.Router()
 const port = process.env.PORT
 
 // middlewares
 app.use(cors(), express.json(), express.static("views"))
 app.use("/styles", express.static(path.join(__dirname, "styles")))
 
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
 })
 
 // category route
-router.use("/api/categories", categoryRouter)
+app.use("/api/categories", categoryRouter)
 
 // user route
-router.use("/api/users", userRouter)
+app.use("/api/users", userRouter)
 
 // laundry route
-router.use("/api/laundries", laundryRouter)
-
-app.use("/", router)
+app.use("/api/laundries", laundryRouter)
 
 // route not found
 app.use((req, res) => {
