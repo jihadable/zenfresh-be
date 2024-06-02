@@ -30,7 +30,7 @@ const getUserProfile = async (req, res) => {
             laundries: laundries.map(laundry => laundry.response())
         })
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -51,7 +51,7 @@ const register = async (req, res) => {
         })
 
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -75,7 +75,7 @@ const login = async (req, res) => {
             token: await user.generateJWT()
         })
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -92,7 +92,7 @@ const updateUserProfile = async(req, res) => {
 
         return res.status(200).json(defaultResponse(200, true, "User profile updated successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 

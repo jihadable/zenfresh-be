@@ -5,6 +5,7 @@ const laundryRouter = require("./routes/laundryRoute")
 const userRouter = require("./routes/userRoute")
 const path = require("path")
 const categoryRouter = require("./routes/categoryRoute")
+const reviewRouter = require("./routes/reviewRoute")
 
 require("dotenv").config()
 
@@ -28,6 +29,9 @@ app.use("/api/users", userRouter)
 
 // laundry route
 app.use("/api/laundries", laundryRouter)
+
+// review route
+app.use("/api/reviews", reviewRouter)
 
 // route not found
 app.use((req, res) => {

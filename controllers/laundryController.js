@@ -10,7 +10,7 @@ const storeLaundry = async (req, res) => {
 
         return res.status(201).json(defaultResponse(201, true, "Laundry created successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -27,7 +27,7 @@ const deleteSingleLaundry = async (req, res) => {
 
         return res.status(200).json(defaultResponse(200, true, "Laundry deleted successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -44,7 +44,7 @@ const updateLaundry = async (req, res) => {
 
         return res.status(200).json(defaultResponse(200, true, "Laundry updated successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 

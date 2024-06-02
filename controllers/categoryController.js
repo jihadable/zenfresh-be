@@ -12,7 +12,7 @@ const getAllCategories = async(req, res) => {
             categories: categories.map(category => category.response())
         })
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -22,7 +22,7 @@ const storeCategory = async(req, res) => {
 
         return res.status(201).json(defaultResponse(201, true, "Created category successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -38,7 +38,7 @@ const deleteCategory = async(req, res) => {
 
         return res.status(200).json(defaultResponse(200, true, "Delete category successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -54,7 +54,7 @@ const updateCategory = async(req, res) => {
 
         return res.status(200).json(defaultResponse(200, true, "Update category successfully"))
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 

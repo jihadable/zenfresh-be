@@ -12,7 +12,7 @@ const idValidation = async (req, res, next) => {
 
         next()
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 

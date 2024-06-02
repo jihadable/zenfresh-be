@@ -10,7 +10,7 @@ const encryptPassword = async (req, res, next) => {
         
         next()
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
@@ -31,7 +31,7 @@ const verifyToken = async (req, res, next) => {
 
         next()
     } catch (error){
-        serverErrorResponse(error, res)
+        return serverErrorResponse(error, res)
     }
 }
 
