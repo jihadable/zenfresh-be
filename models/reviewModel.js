@@ -6,7 +6,7 @@ const reviewSchema = new Schema(
             type: Types.ObjectId,
             ref: "User"
         },
-        comment: String,
+        content: String,
         date: String
     },
     {
@@ -19,7 +19,7 @@ const reviewSchema = new Schema(
 reviewSchema.methods.response = function(){
     return {
         user: this.user.reponse(),
-        comment: this.comment,
+        content: this.content,
         date: this.date
     }
 }
