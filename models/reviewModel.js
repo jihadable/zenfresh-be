@@ -1,5 +1,6 @@
 const { Schema, model, Types } = require("mongoose")
 
+// review schema
 const reviewSchema = new Schema(
     {
         user: {

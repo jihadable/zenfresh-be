@@ -1,5 +1,6 @@
 const { Router } = require("express")
 const { storeReview, getAllReviews } = require("../controllers/reviewController")
+const { verifyToken } = require("../middlewares/authMiddleware")
 
 const reviewRouter = Router()
 
@@ -7,6 +8,6 @@ const reviewRouter = Router()
 reviewRouter.get("/", getAllReviews)
 
 // store review
-reviewRouter.post("/", storeReview)
+reviewRouter.post("/", verifyToken, storeReview)
 
 module.exports = reviewRouter
