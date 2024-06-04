@@ -24,6 +24,10 @@ const laundrySchema = new Schema(
             type: Number,
             default: null
         },
+        rate: {
+            type: Number,
+            default: null
+        },
         user: {
             type: Types.ObjectId,
             ref: "User"
