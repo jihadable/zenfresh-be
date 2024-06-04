@@ -50,6 +50,7 @@ laundrySchema.methods.response = function(){
         status: this.status,
         payment_method: this.payment_method,
         weight: this.weight,
+        rate: this.rate,
         user: this.user.response()
     }
 }
