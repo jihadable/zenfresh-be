@@ -1,12 +1,12 @@
 const { Router } = require("express")
-const { getTransactionStatus, getPaymentToken } = require("../controllers/paymentController")
+const { getPaymentToken, updatePaymentStatus } = require("../controllers/paymentController")
 
 const paymentRouter = Router()
 
-// get transaction status
-paymentRouter.get("/status/:transactionId", getTransactionStatus)
-
 // generate midtrans token
 paymentRouter.post("/token", getPaymentToken)
+
+// update payment status
+paymentRouter.post("/status", updatePaymentStatus)
 
 module.exports = paymentRouter

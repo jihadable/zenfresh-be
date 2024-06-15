@@ -38,34 +38,19 @@ const getPaymentToken = async (req, res) => {
     }
 }
 
-// get transaction status
-const getTransactionStatus = async (req, res) => {
+// update payment status
+const updatePaymentStatus = async (req, res) => {
     try {
-        const coreApi = new Midtrans.CoreApi({
-            isProduction: false,
-            serverKey: process.env.SERVER_KEY,
-            clientKey: process.env.CLIENT_KEY
-        })
+        const { order_id, transaction_status } = req.body
 
-        const { transactionId } = req.params
-
-        const transactionStatus = await coreApi.transaction.status(transactionId)
-
-        const laundry = await Laundry.findOne({ transaction_id: transactionId })
-
-        if (!laundry.is_paid || laundry.status !== "Selesai"){
-            if (transactionStatus.transaction_status === "settlement" || transactionStatus.transaction_status === "capture"){
-                await Laundry.findOneAndUpdate({ transaction_id: transactionId }, { is_paid: true, status: "Selesai", end_date: getEndDate() })
-            }
+        if (transaction_status === "settlement" || transaction_status === "capture"){
+            await Laundry.findOneAndUpdate({ transaction_id: order_id }, { is_paid: true, status: "Selesai", end_date: getEndDate() })
         }
 
-        return res.status(200).json({
-            ...defaultResponse(200, true, "Transaction status retrieved successfully"),
-            transaction: transactionStatus
-        })
+        return res.status(200).json(defaultResponse(200, true, "Notification received and processed successfully"))
     } catch(error){
         return serverErrorResponse(error, res)
     }
 }
 
-module.exports = { getTransactionStatus, getPaymentToken }
+module.exports = { getPaymentToken, updatePaymentStatus }
