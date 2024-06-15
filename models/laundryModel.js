@@ -2,6 +2,10 @@ const { Schema, Types, model } = require("mongoose")
 
 const laundrySchema = new Schema(
     {
+        transaction_id: {
+            type: String,
+            default: null
+        },
         category: {
             type: Types.ObjectId,
             ref: "Category"
@@ -39,6 +43,13 @@ const laundrySchema = new Schema(
     }
 )
 
+// menunggu konfirmasi
+// kurir menjemput pakaian pelanggan
+// menunggu proses pencucian
+// kurir mengantar pakaian pelanggan
+// menunggu pembayaran
+// selesai
+
 // response template
 laundrySchema.methods.response = function(){
     return {
@@ -51,6 +62,7 @@ laundrySchema.methods.response = function(){
         payment_method: this.payment_method,
         weight: this.weight,
         rate: this.rate,
+        transaction_id: this.transaction_id,
         user: this.user.response()
     }
 }
