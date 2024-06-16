@@ -46,7 +46,7 @@ const updatePaymentStatus = async (req, res) => {
 
         if (transaction_status === "settlement" || transaction_status === "capture"){
             if (payment_type === "bank_transfer"){
-                payment_type = req.body.va_numbers.bank
+                payment_type = req.body.va_numbers[0].bank
             }
             await Laundry.findOneAndUpdate({ transaction_id: order_id }, { is_paid: true, status: "Selesai", payment_method: payment_type, end_date: getEndDate() })
         }
