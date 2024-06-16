@@ -22,7 +22,7 @@ const laundrySchema = new Schema(
         status: String,
         payment_method: {
             type: String,
-            default: "Cash"
+            default: null
         },
         weight: {
             type: Number,

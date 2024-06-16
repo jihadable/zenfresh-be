@@ -42,9 +42,13 @@ const getPaymentToken = async (req, res) => {
 const updatePaymentStatus = async (req, res) => {
     try {
         const { order_id, transaction_status } = req.body
+        let { payment_type } = req.body
 
         if (transaction_status === "settlement" || transaction_status === "capture"){
-            await Laundry.findOneAndUpdate({ transaction_id: order_id }, { is_paid: true, status: "Selesai", end_date: getEndDate() })
+            if (payment_type === "bank_transfer"){
+                payment_type = req.body.va_numbers.bank
+            }
+            await Laundry.findOneAndUpdate({ transaction_id: order_id }, { is_paid: true, status: "Selesai", payment_method: payment_type, end_date: getEndDate() })
         }
 
         return res.status(200).json(defaultResponse(200, true, "Notification received and processed successfully"))
