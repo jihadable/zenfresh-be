@@ -5,7 +5,7 @@ const serverErrorResponse = require("../utils/serverErrorResponse")
 // get all reviews
 const getAllReviews = async(req, res) => {
     try {
-        const reviews = await Review.find({ createdAt: -1 })
+        const reviews = await Review.find().sort({ createdAt: -1 }).populate("user")
 
         return res.status(200).json({
             ...defaultResponse(200, true, "Get all reviews successfully"),

@@ -19,7 +19,7 @@ const reviewSchema = new Schema(
 // review response
 reviewSchema.methods.response = function(){
     return {
-        user: this.user.reponse(),
+        user: this.user.response(),
         content: this.content,
         date: this.date
     }
