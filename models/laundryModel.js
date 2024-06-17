@@ -4,7 +4,6 @@ const laundrySchema = new Schema(
     {
         transaction_id: {
             type: String,
-            unique: true,
             default: null
         },
         category: {
