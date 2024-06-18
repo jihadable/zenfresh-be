@@ -14,7 +14,7 @@ const getPaymentToken = async (req, res) => {
             clientKey: process.env.CLIENT_KEY
         })
 
-        const { laundry_id, total } = req.body
+        const { laundry_id, category_name, total } = req.body
 
         const transactionId = new Types.ObjectId()
 
@@ -22,6 +22,11 @@ const getPaymentToken = async (req, res) => {
             transaction_details: {
                 order_id: transactionId,
                 gross_amount: total
+            },
+            item_details: {
+                name: "Laundry " + category_name,
+                price: total,
+                quantity: 1
             }
         }
 
