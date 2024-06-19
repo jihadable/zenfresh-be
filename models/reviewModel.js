@@ -9,7 +9,7 @@ const reviewSchema = new Schema(
         },
         rate: Number,
         content: String,
-        date: String
+        date: Date
     },
     {
         timestamps: true,

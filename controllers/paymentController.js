@@ -2,7 +2,6 @@ const serverErrorResponse = require("../utils/serverErrorResponse")
 const defaultResponse = require("../utils/defaultResponse")
 const Midtrans = require("midtrans-client")
 const { Laundry } = require("../models/laundryModel")
-const getEndDate = require("../utils/createEndDate")
 const { Types } = require("mongoose")
 
 // get payment token
@@ -53,7 +52,7 @@ const updatePaymentStatus = async (req, res) => {
             if (payment_type === "bank_transfer"){
                 payment_type = req.body.va_numbers[0].bank
             }
-            await Laundry.findOneAndUpdate({ transaction_id: order_id }, { is_paid: true, status: "Selesai", payment_method: payment_type, end_date: getEndDate() })
+            await Laundry.findOneAndUpdate({ transaction_id: order_id }, { is_paid: true, payment_method: payment_type })
         }
 
         return res.status(200).json(defaultResponse(200, true, "Notification received and processed successfully"))
