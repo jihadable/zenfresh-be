@@ -47,7 +47,7 @@ const register = async (req, res) => {
             return res.status(400).json(defaultResponse(400, false, "User have already registered"))
         }
 
-        user = await User.create({ ...req.body })
+        user = await User.create({ ...req.body, role: "customer" })
     
         return res.status(201).json({
             ...defaultResponse(201, true, "User registered"),
