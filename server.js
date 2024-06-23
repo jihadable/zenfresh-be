@@ -33,7 +33,7 @@ app.use("/api/categories", categoryRouter)
 app.use("/api/users", userRouter)
 
 // laundry route
-app.use("/api/laundries", laundryRouter)
+// app.use("/api/laundries", laundryRouter)
 
 // review route
 app.use("/api/reviews", reviewRouter)
