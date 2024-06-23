@@ -37,6 +37,10 @@ const getUserProfile = async (req, res) => {
 // register method
 const register = async (req, res) => {
     try {
+        if (req.body.role === "admin"){
+            return res.status(400).json(defaultResponse(400, false, "Invalid role"))
+        }
+        
         let user = await User.findOne({ email: req.body.email })
 
         if (user){
