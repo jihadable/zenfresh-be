@@ -7,6 +7,7 @@ const path = require("path")
 const categoryRouter = require("./routes/categoryRoute")
 const reviewRouter = require("./routes/reviewRoute")
 const paymentRouter = require("./routes/paymentRoute")
+const { User } = require("./models/userModel")
 
 require("dotenv").config()
 
