@@ -8,6 +8,7 @@ const categoryRouter = require("./routes/categoryRoute")
 const reviewRouter = require("./routes/reviewRoute")
 const paymentRouter = require("./routes/paymentRoute")
 const { User } = require("./models/userModel")
+const userMigration = require("./database/userMigration")
 
 require("dotenv").config()
 
@@ -22,6 +23,8 @@ app.use("/images", express.static(path.join(__dirname, "images")))
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
 })
+
+// app.use("/api", )
 
 // category route
 app.use("/api/categories", categoryRouter)

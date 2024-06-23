@@ -5,6 +5,9 @@ const serverErrorResponse = require("../utils/serverErrorResponse")
 // post a laundry
 const storeLaundry = async (req, res) => {
     try {
+
+        return res.status(400).json(defaultResponse(400, false, "Cannot store laundry"))
+
         const { user_id } = req.body
         await Laundry.create({ ...req.body, user: user_id })
 
