@@ -4,11 +4,10 @@ const cors = require("cors")
 const laundryRouter = require("./routes/laundryRoute")
 const userRouter = require("./routes/userRoute")
 const path = require("path")
+const rateLimit = require('express-rate-limit');
 const categoryRouter = require("./routes/categoryRoute")
 const reviewRouter = require("./routes/reviewRoute")
 const paymentRouter = require("./routes/paymentRoute")
-const { User } = require("./models/userModel")
-const userMigration = require("./database/userMigration")
 
 require("dotenv").config()
 
@@ -16,7 +15,7 @@ const app = express()
 const port = process.env.PORT
 
 // middlewares
-app.use(cors(), express.json(), express.static("views"))
+app.use(cors({ origin: "https://zenfresh-proto.netlify.app" }), express.json(), express.static("views"))
 app.use("/styles", express.static(path.join(__dirname, "styles")))
 app.use("/images", express.static(path.join(__dirname, "images")))
 
@@ -24,7 +23,19 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "index.html"))
 })
 
-// app.use("/api", )
+// rate limit
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: {
+        status: 429,
+        ok: false,
+        message: "Too many requests from this IP, please try again after 15 minutes"
+    },
+    statusCode: 429
+})
+
+app.use("/api", apiLimiter)
 
 // category route
 app.use("/api/categories", categoryRouter)
@@ -33,7 +44,7 @@ app.use("/api/categories", categoryRouter)
 app.use("/api/users", userRouter)
 
 // laundry route
-// app.use("/api/laundries", laundryRouter)
+app.use("/api/laundries", laundryRouter)
 
 // review route
 app.use("/api/reviews", reviewRouter)

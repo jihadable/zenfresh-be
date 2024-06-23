@@ -2,6 +2,7 @@ const { hash } = require("bcrypt")
 const { verify } = require("jsonwebtoken")
 const serverErrorResponse = require("../utils/serverErrorResponse")
 const defaultResponse = require("../utils/defaultResponse")
+const { User } = require("../models/userModel")
 
 // encrypt password method
 const encryptPassword = async (req, res, next) => {
@@ -26,6 +27,12 @@ const verifyToken = async (req, res, next) => {
         const token = authorization.split(" ")[1]
         
         const { id } = verify(token, process.env.JWT_SECRET)
+
+        const user = await User.findById(id)
+
+        if (!user){
+            return res.status(404).json(defaultResponse(404, false, "Unauthenticated user"))
+        }
 
         req.body.user_id = id
 

@@ -4,10 +4,12 @@ const { verifyToken } = require("../middlewares/authMiddleware")
 
 const reviewRouter = Router()
 
+reviewRouter.use(verifyToken)
+
 // get all reviews
 reviewRouter.get("/", getAllReviews)
 
 // store review
-reviewRouter.post("/", verifyToken, storeReview)
+reviewRouter.post("/", storeReview)
 
 module.exports = reviewRouter

@@ -1,14 +1,15 @@
 const { Laundry } = require("../models/laundryModel")
+const { User } = require("../models/userModel")
 const defaultResponse = require("../utils/defaultResponse")
 const serverErrorResponse = require("../utils/serverErrorResponse")
 
 // post a laundry
 const storeLaundry = async (req, res) => {
     try {
-
-        return res.status(400).json(defaultResponse(400, false, "Cannot store laundry"))
-
         const { user_id } = req.body
+        
+        const user = await User.findById(user_id)
+
         await Laundry.create({ ...req.body, user: user_id })
 
         return res.status(201).json(defaultResponse(201, true, "Laundry created successfully"))
