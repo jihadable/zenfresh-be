@@ -21,7 +21,7 @@ const verifyToken = async (req, res, next) => {
         const authorization = req.header("Authorization")
 
         if (!authorization){
-            return res.status(401).json(defaultResponse(401, false, "Token not provided"))
+            return res.status(401).json(defaultResponse(401, false, "Token invalid"))
         }
         
         const token = authorization.split(" ")[1]
@@ -31,7 +31,7 @@ const verifyToken = async (req, res, next) => {
         const user = await User.findById(id)
 
         if (!user){
-            return res.status(404).json(defaultResponse(404, false, "Unauthenticated user"))
+            return res.status(404).json(defaultResponse(404, false, "Pengguna tidak terdaftar"))
         }
 
         req.body.user_id = id

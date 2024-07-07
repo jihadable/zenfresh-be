@@ -4,8 +4,8 @@ const Midtrans = require("midtrans-client")
 const { Laundry } = require("../models/laundryModel")
 const { Types } = require("mongoose")
 
-// get payment token
-const getPaymentToken = async (req, res) => {
+// create payment token
+const createPaymentToken = async(req, res) => {
     try {
         const snap = new Midtrans.Snap({
             isProduction: false,
@@ -43,7 +43,7 @@ const getPaymentToken = async (req, res) => {
 }
 
 // update payment status
-const updatePaymentStatus = async (req, res) => {
+const updatePaymentStatus = async(req, res) => {
     try {
         const { order_id, transaction_status } = req.body
         let { payment_type } = req.body
@@ -61,4 +61,4 @@ const updatePaymentStatus = async (req, res) => {
     }
 }
 
-module.exports = { getPaymentToken, updatePaymentStatus }
+module.exports = { createPaymentToken, updatePaymentStatus }

@@ -1,10 +1,10 @@
 const { Router } = require("express")
-const { getPaymentToken, updatePaymentStatus } = require("../controllers/paymentController")
+const { updatePaymentStatus, createPaymentToken } = require("../controllers/paymentController")
 
 const paymentRouter = Router()
 
 // generate midtrans token
-paymentRouter.post("/token", getPaymentToken)
+paymentRouter.post("/token", createPaymentToken)
 
 // update payment status
 paymentRouter.post("/status", updatePaymentStatus)

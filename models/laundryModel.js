@@ -10,10 +10,9 @@ const laundrySchema = new Schema(
             type: Types.ObjectId,
             ref: "Category"
         },
-        start_date: String,
-        end_date: {
-            type: String,
-            default: null
+        date: {
+            type: Date,
+            default: Date.now
         },
         is_paid: {
             type: Boolean,
@@ -43,6 +42,7 @@ const laundrySchema = new Schema(
     }
 )
 
+// status:
 // menunggu konfirmasi
 // kurir menjemput pakaian pelanggan
 // menunggu proses pencucian
@@ -55,8 +55,7 @@ laundrySchema.methods.response = function(){
     return {
         id: this._id,
         category: this.category.response(),
-        start_date: this.start_date,
-        end_date: this.end_date,
+        date: this.date,
         is_paid: this.is_paid,
         status: this.status,
         payment_method: this.payment_method,
