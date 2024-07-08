@@ -27,7 +27,7 @@ const storeLaundry = async(req, res) => {
 
         return res.status(201).json({
             ...defaultResponse(201, true, "Berhasil membuat pesanan baru"),
-            laundry
+            laundry: laundry.response()
         })
     } catch (error){
         return serverErrorResponse(error, res)
@@ -77,9 +77,11 @@ const deleteSingleLaundry = async(req, res) => {
 // update laundry
 const updateLaundry = async(req, res) => {
     const updateLaundrySchema = Joi.object({
-        category: Joi.string().required(),
-        status: Joi.string().required(),
-        weight: Joi.number().allow(null)
+        category: Joi.string(),
+        status: Joi.string(),
+        weight: Joi.number(),
+        rate: Joi.number(),
+        user_id: Joi.string()
     })
 
     const { error } = updateLaundrySchema.validate(req.body)
@@ -90,13 +92,16 @@ const updateLaundry = async(req, res) => {
 
     try {
         const { id } = req.params
-        const updatedLaundry = await Laundry.findByIdAndUpdate(id, { ...req.body })
+        const updatedLaundry = await Laundry.findByIdAndUpdate(id, { ...req.body }, { new: true }).populate("user").populate("category")
 
         if (!updatedLaundry){
             return res.status(404).json(defaultResponse(404, false, "Pesanan tidak ditemukan"))
         }
 
-        return res.status(200).json(defaultResponse(200, true, "Berhasil memperbarui data pesanan"))
+        return res.status(200).json({
+            ...defaultResponse(200, true, "Berhasil memperbarui data pesanan"),
+            laundry: updatedLaundry.response()
+        })
     } catch (error){
         return serverErrorResponse(error, res)
     }

@@ -8,6 +8,6 @@ const paymentRouter = Router()
 paymentRouter.post("/token", verifyToken, createPaymentToken)
 
 // update payment status
-paymentRouter.post("/status", verifyToken, updatePaymentStatus)
+paymentRouter.post("/status", updatePaymentStatus)
 
 module.exports = paymentRouter
