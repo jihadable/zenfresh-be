@@ -23,7 +23,8 @@ const storeLaundry = async(req, res) => {
     try {
         const { user_id } = req.body
 
-        const laundry = await Laundry.create({ ...req.body, user: user_id })
+        const { _id } = await Laundry.create({ ...req.body, user: user_id })
+        const laundry = await Laundry.findById(_id).populate("user").populate("category")
 
         return res.status(201).json({
             ...defaultResponse(201, true, "Berhasil membuat pesanan baru"),
