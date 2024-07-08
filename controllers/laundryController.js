@@ -10,8 +10,8 @@ const storeLaundry = async(req, res) => {
         category: Joi.string().required(),
         date: Joi.date().required(),
         is_paid: Joi.boolean().valid(false).required(),
-        status: Joi.string().required(),
-        user: Joi.string().required()
+        status: Joi.string().valid("Menunggu konfirmasi").required(),
+        user_id: Joi.string().required()
     })
 
     const { error } = storeLaundrySchema.validate(req.body)
@@ -23,9 +23,12 @@ const storeLaundry = async(req, res) => {
     try {
         const { user_id } = req.body
 
-        await Laundry.create({ ...req.body, user: user_id })
+        const laundry = await Laundry.create({ ...req.body, user: user_id })
 
-        return res.status(201).json(defaultResponse(201, true, "Berhasil membuat pesanan baru"))
+        return res.status(201).json({
+            ...defaultResponse(201, true, "Berhasil membuat pesanan baru"),
+            laundry
+        })
     } catch (error){
         return serverErrorResponse(error, res)
     }

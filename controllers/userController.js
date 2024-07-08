@@ -5,7 +5,7 @@ const defaultResponse = require("../utils/defaultResponse")
 const Joi = require("joi")
 
 // get user profile method
-const getUserProfile = async (req, res) => {
+const getUserProfile = async(req, res) => {
     try {
         const { user_id } = req.body
 
@@ -25,7 +25,7 @@ const getUserProfile = async (req, res) => {
 }
 
 // register method
-const register = async (req, res) => {
+const register = async(req, res) => {
     const registerSchema = Joi.object({
         fullname: Joi.string().required(),
         email: Joi.string().email().required(),
@@ -45,14 +45,15 @@ const register = async (req, res) => {
         let user = await User.findOne({ email: req.body.email })
 
         if (user){
-            return res.status(400).json(defaultResponse(400, false, "Pengguna sudah terdaftar"))
+            return res.status(400).json(defaultResponse(400, false, "Email yang dimasukkan sudah terdaftar"))
         }
 
         user = await User.create({ ...req.body, role: "customer" })
     
         return res.status(201).json({
             ...defaultResponse(201, true, "Pengguna berhasil registrasi"),
-            token: await user.generateJWT()
+            token: await user.generateJWT(),
+            user: user.response()
         })
 
     } catch (error){
@@ -61,7 +62,7 @@ const register = async (req, res) => {
 }
 
 // login method
-const login = async (req, res) => {
+const login = async(req, res) => {
     const loginSchema = Joi.object({
         email: Joi.string().email().required(),
         password: Joi.string().min(8).required()
@@ -84,7 +85,8 @@ const login = async (req, res) => {
 
         return res.status(202).json({
             ...defaultResponse(202, true, "Pengguna berhasil login"),
-            token: await user.generateJWT()
+            token: await user.generateJWT(),
+            user: user.response()
         })
     } catch (error){
         return serverErrorResponse(error, res)

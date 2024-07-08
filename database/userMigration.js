@@ -9,7 +9,7 @@ const userMigration = async() => {
             fullname: "Umar Jihad",
             email: "umarjihad@gmail.com",
             password: await hash("abcddcba", 10),
-            no_hp: "082352395596",
+            phone: "082352395596",
             address: "Jl. Langsat",
             role: "customer"
         }),

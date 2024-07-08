@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const { storeLaundry, deleteSingleLaundry, updateLaundry } = require("../controllers/laundryController")
+const { storeLaundry, deleteSingleLaundry, updateLaundry, getAllLaundries } = require("../controllers/laundryController")
 const { verifyToken } = require("../middlewares/authMiddleware")
 const idValidation = require("../middlewares/idValidationMiddleware")
 
@@ -9,6 +9,9 @@ laundryRouter.use(verifyToken)
 
 // post a laundry
 laundryRouter.post("/", storeLaundry)
+
+// get all laundries
+laundryRouter.get("/", getAllLaundries)
 
 // delete a laundry
 laundryRouter.delete("/:id", idValidation, deleteSingleLaundry)
