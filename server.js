@@ -6,7 +6,6 @@ const userRouter = require("./routes/userRoute")
 const path = require("path")
 const rateLimit = require('express-rate-limit');
 const categoryRouter = require("./routes/categoryRoute")
-const reviewRouter = require("./routes/reviewRoute")
 const paymentRouter = require("./routes/paymentRoute")
 
 require("dotenv").config()
@@ -45,9 +44,6 @@ app.use("/api/users", userRouter)
 
 // laundry route
 app.use("/api/laundries", laundryRouter)
-
-// review route
-app.use("/api/reviews", reviewRouter)
 
 // payment route
 app.use("/api/payment", paymentRouter)
