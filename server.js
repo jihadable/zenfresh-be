@@ -15,7 +15,7 @@ const app = express()
 const port = process.env.PORT
 
 // middlewares
-app.use(cors(), express.json(), express.static("views"))
+app.use(cors({ origin: ["https://zenfresh.netlify.app", "http://localhost:5173"] }), express.json(), express.static("views"))
 app.use("/styles", express.static(path.join(__dirname, "styles")))
 app.use("/images", express.static(path.join(__dirname, "images")))
 
