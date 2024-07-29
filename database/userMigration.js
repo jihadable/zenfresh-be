@@ -8,7 +8,7 @@ const userMigration = async() => {
         User.create({
             fullname: "Umar Jihad",
             email: "umarjihad@gmail.com",
-            password: await hash("abcddcba", 10),
+            password: await hash(process.env.PRIVATE_PASSWORD, 10),
             phone: "082352395596",
             address: "Jl. Langsat",
             role: "customer"
@@ -16,7 +16,7 @@ const userMigration = async() => {
         User.create({
             fullname: "_Admin",
             email: "admin@gmail.com",
-            password: await hash("abcddcba", 10),
+            password: await hash(process.env.PRIVATE_PASSWORD, 10),
             role: "admin"
         })
     ]) 
