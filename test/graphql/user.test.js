@@ -5,7 +5,7 @@ const mongoose = require("mongoose")
 describe("User API", () => {
     let jwt
 
-    afterAll(async () => {
+    afterAll(async() => {
         await mongoose.connection.close()
     })
 
@@ -26,8 +26,7 @@ describe("User API", () => {
             }`
         })
 
-        expect(response.body.errors).toBe(undefined)
-
+        expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
         
         expect(response.body.data).toHaveProperty("register")
@@ -39,6 +38,7 @@ describe("User API", () => {
         expect(response.body.data.register.user).toHaveProperty("id")
         expect(response.body.data.register.user).toHaveProperty("name")
         expect(response.body.data.register.user).toHaveProperty("email")
+        expect(response.body.data.register.user).toHaveProperty("phone")
         expect(response.body.data.register.user).toHaveProperty("address")
         expect(response.body.data.register.user).toHaveProperty("role")
 
@@ -76,8 +76,7 @@ describe("User API", () => {
                 }`
             })
         
-        expect(response.body.errors).toBe(undefined)
-
+        expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
         
         expect(response.body.data).toHaveProperty("user")
@@ -85,6 +84,7 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("id")
         expect(response.body.data.user).toHaveProperty("name")
         expect(response.body.data.user).toHaveProperty("email")
+        expect(response.body.data.user).toHaveProperty("phone")
         expect(response.body.data.user).toHaveProperty("address")
         expect(response.body.data.user).toHaveProperty("role")
 
@@ -125,8 +125,7 @@ describe("User API", () => {
                 }`
             })
         
-        expect(response.body.errors).toBe(undefined)
-
+        expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
         
         expect(response.body.data).toHaveProperty("update_user")
@@ -134,6 +133,7 @@ describe("User API", () => {
         expect(response.body.data.update_user).toHaveProperty("id")
         expect(response.body.data.update_user).toHaveProperty("name")
         expect(response.body.data.update_user).toHaveProperty("email")
+        expect(response.body.data.update_user).toHaveProperty("phone")
         expect(response.body.data.update_user).toHaveProperty("address")
         expect(response.body.data.update_user).toHaveProperty("role")
 
@@ -158,8 +158,7 @@ describe("User API", () => {
             }`
         })
 
-        expect(response.body.errors).toBe(undefined)
-
+        expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
         
         expect(response.body.data).toHaveProperty("login")
@@ -170,6 +169,7 @@ describe("User API", () => {
         expect(response.body.data.login.user).toHaveProperty("id")
         expect(response.body.data.login.user).toHaveProperty("name")
         expect(response.body.data.login.user).toHaveProperty("email")
+        expect(response.body.data.login.user).toHaveProperty("phone")
         expect(response.body.data.login.user).toHaveProperty("address")
         expect(response.body.data.login.user).toHaveProperty("role")
 

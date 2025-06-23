@@ -6,8 +6,8 @@ const getUsers = async() => {
     return [
         {
             role: "admin",
-            email: "luminousadmin@gmail.com",
-            name: "luminous admin",
+            email: "zenfreshadmin@gmail.com",
+            name: "zenfresh admin",
             password: await hash(password, 10)
         },
         {

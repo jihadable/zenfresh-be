@@ -11,9 +11,13 @@ const orderQuery = {
         },
         resolve: async(_, { id }, context) => {
             try {
-                auth(context)
+                const { id: user_id, role } = auth(context)
 
                 const order = await orderService.getOrderById(id)
+
+                if (user_id !== id && role !== "customer"){
+                    throw new Error("Pengguna tidak diizinkan")
+                }
     
                 return order
             } catch(error){

@@ -10,7 +10,6 @@ const OrderType = new GraphQLObjectType({
         id: { type: GraphQLID, resolve: parent => parent._id },
         status: { type: GraphQLString },
         date: { type: GraphQLString },
-        rate: { type: GraphQLInt },
         category: {
             type: CategoryType,
             resolve: async(parent) => {

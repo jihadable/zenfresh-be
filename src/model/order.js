@@ -17,15 +17,18 @@ const OrderSchema = new Schema(
         },
         date: {
             type: Date,
-            default: Date.now
+            default: Date.now,
+            required: true
         },
         category: {
             type: Types.ObjectId,
-            ref: "Category"
+            ref: "Category",
+            required: true,
         },
         user: {
             type: Types.ObjectId,
-            ref: "User"
+            ref: "User",
+            required: true,
         }
     },
     {

@@ -1,7 +1,7 @@
 const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
 const CategoryType = require("../../type/categoryType");
 const categoryService = require("../../service/categoryService");
-const { authorizeRole, auth } = require("../../../helper/auth");
+const { auth } = require("../../../helper/auth");
 
 const categoryQuery = {
     category: {
@@ -11,7 +11,7 @@ const categoryQuery = {
         },
         resolve: async(_, { id }, context) => {
             try {
-                authorizeRole(context, "admin")
+                auth(context)
 
                 const category = await categoryService.getCategoryById(id)
     
@@ -23,7 +23,7 @@ const categoryQuery = {
     },
     categories: {
         type: new GraphQLList(CategoryType),
-        resolve: async() => {
+        resolve: async(_, __, context) => {
             try {
                 auth(context)
 

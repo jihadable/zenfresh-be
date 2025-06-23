@@ -13,7 +13,7 @@ const orderMutation = {
             try {
                 const { id } = authorizeRole(context, "customer")
     
-                const order = await orderService.addOrder(id, category)
+                const order = await orderService.addOrder({ id, category })
     
                 return order
             } catch(error){

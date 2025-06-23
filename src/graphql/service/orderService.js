@@ -6,7 +6,9 @@ class OrderService {
     }
 
     async addOrder({ user, category }){
-        const order = await this._model.create({ user, category })
+        const order = await this._model.create({ user, category, status: "Pending confirmation" })
+
+        return order
     }
 
     async getOrderById(id){
