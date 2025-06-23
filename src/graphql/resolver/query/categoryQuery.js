@@ -17,7 +17,6 @@ const categoryQuery = {
     
                 return category
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -32,7 +31,6 @@ const categoryQuery = {
     
                 return categories
             } catch(error){
-                console.log(error)
                 throw error
             }
         }

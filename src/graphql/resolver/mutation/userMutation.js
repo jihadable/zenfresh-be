@@ -22,7 +22,6 @@ const userMutation = {
     
                 return { token, user }
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -40,7 +39,6 @@ const userMutation = {
     
                 return { token, user }
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -48,20 +46,18 @@ const userMutation = {
     update_user: {
         type: UserType,
         args: {
-            id: { type: new GraphQLNonNull(GraphQLID) },
             name: { type: new GraphQLNonNull(GraphQLString) },
             phone: { type: new GraphQLNonNull(GraphQLString) },
             address: { type: new GraphQLNonNull(GraphQLString) }
         },
-        resolve: async(_, {id, name, phone, address }) => {
+        resolve: async(_, { name, phone, address }, context) => {
             try {
-                authorizeRole(context, "customer")
+                const { id } = authorizeRole(context, "customer")
 
                 const user = await userService.updateUserById(id, { name, phone, address })
     
                 return user
             } catch(error){
-                console.log(error)
                 throw error
             }
         }

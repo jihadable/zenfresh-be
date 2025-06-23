@@ -1,3 +1,5 @@
+const { verify } = require("jsonwebtoken")
+
 const auth = context => {
     try {
         const authorization = context.header("Authorization")
@@ -14,7 +16,6 @@ const auth = context => {
 
         return payload
     } catch(error){
-        console.log(error)
         throw error
     }
 }
@@ -29,7 +30,6 @@ const authorizeRole = (context, ...allowedRoles) => {
 
         return user
     } catch(error){
-        console.log(error)
         throw error
     }
 }

@@ -19,7 +19,6 @@ const categoryMutation = {
     
                 return category
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -37,7 +36,6 @@ const categoryMutation = {
     
                 return true
             } catch(error){
-                console.log(error)
                 throw error
             }
         }

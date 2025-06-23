@@ -17,7 +17,6 @@ const orderMutation = {
     
                 return order
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -36,7 +35,6 @@ const orderMutation = {
     
                 return order
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -54,7 +52,6 @@ const orderMutation = {
     
                 return true
             } catch(error){
-                console.log(error)
                 throw error
             }
         }

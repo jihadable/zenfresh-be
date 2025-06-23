@@ -17,7 +17,6 @@ const orderQuery = {
     
                 return order
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -32,7 +31,6 @@ const orderQuery = {
 
                 return orders
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
@@ -47,7 +45,6 @@ const orderQuery = {
     
                 return orders
             } catch(error){
-                console.log(error)
                 throw error
             }
         }
