@@ -12,5 +12,7 @@ ZenFresh adalah solusi terpercaya untuk kebutuhan laundry. Terdapat fitur pemesa
 » ExpressJS
 <br/>
 » MongoDB
+<br/>
+» GraphQL
 
 <img src="https://umarjihad.netlify.app/pic/zenfresh.png" />
