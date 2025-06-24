@@ -31,7 +31,7 @@ class OrderService {
 
     async updateOrderById(id, { status }){
         await this.getOrderById(id)
-        const order = await this._model.findByIdAndUpdate(id, { status })
+        const order = await this._model.findByIdAndUpdate(id, { status }, { new: true })
 
         return order
     }

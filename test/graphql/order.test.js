@@ -82,7 +82,7 @@ describe("Order API", () => {
     test("Get categories", async() => {
         const response = await request(app).post("/graphql")
             .set({
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${customer_jwt}`
             })
             .send({
                 query: 
@@ -160,7 +160,7 @@ describe("Order API", () => {
         expect(Array.isArray(response.body.errors)).toBe(true)
     })
 
-    test("Get category with valid id", async() => {
+    test("Get order with valid id", async() => {
         const response = await request(app).post("/graphql")
             .set({
                 "Authorization": `Bearer ${customer_jwt}`
@@ -194,5 +194,81 @@ describe("Order API", () => {
         expect(response.body.data.order.category.id).toBe(category_id)
 
         expect(response.body.data.order.user).toHaveProperty("id")
+    })
+
+    test("Get order with invalid id", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${customer_jwt}`
+            })
+            .send({
+                query:
+                `query {
+                    order(id: "xxx"){
+                        id, status, date, 
+                        category { id }
+                        user { id }
+                    }
+                }`
+            })
+        
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors))
+    })
+
+    test("Update order", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${admin_jwt}`
+            })
+            .send({
+                query:
+                `mutation {
+                    update_order(id: "${order_id}", status: "Pickup in progress"){
+                        id, status, date, 
+                        category { id }
+                        user { id }
+                    }
+                }`
+            })
+        
+        expect(response.body).not.toHaveProperty("errors")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.data).toHaveProperty("update_order")
+
+        expect(response.body.data.update_order).toHaveProperty("id")
+        expect(response.body.data.update_order).toHaveProperty("status")
+        expect(response.body.data.update_order).toHaveProperty("date")
+        expect(response.body.data.update_order).toHaveProperty("category")
+        expect(response.body.data.update_order).toHaveProperty("user")
+
+        expect(response.body.data.update_order.id).toBe(order_id)
+        expect(response.body.data.update_order.status).toBe("Pickup in progress")
+
+        expect(response.body.data.update_order.category).toHaveProperty("id")
+        expect(response.body.data.update_order.category.id).toBe(category_id)
+
+        expect(response.body.data.update_order.user).toHaveProperty("id")
+    })
+
+    test("Delete order", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${admin_jwt}`
+            })
+            .send({
+                query: 
+                `mutation {
+                    delete_order(id: "${order_id}")
+                }`
+            })
+
+        expect(response.body).not.toHaveProperty("errors")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.data).toHaveProperty("delete_order")
+
+        expect(response.body.data.delete_order).toBe(true)
     })
 })
