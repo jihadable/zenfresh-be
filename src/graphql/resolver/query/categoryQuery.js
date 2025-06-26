@@ -1,7 +1,6 @@
 const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
 const CategoryType = require("../../type/categoryType");
 const categoryService = require("../../service/categoryService");
-const { auth } = require("../../../helper/auth");
 
 const categoryQuery = {
     category: {
@@ -9,10 +8,8 @@ const categoryQuery = {
         args: {
             id: { type: new GraphQLNonNull(GraphQLID) }
         },
-        resolve: async(_, { id }, context) => {
+        resolve: async(_, { id }) => {
             try {
-                auth(context)
-
                 const category = await categoryService.getCategoryById(id)
     
                 return category
@@ -23,10 +20,8 @@ const categoryQuery = {
     },
     categories: {
         type: new GraphQLList(CategoryType),
-        resolve: async(_, __, context) => {
+        resolve: async() => {
             try {
-                auth(context)
-
                 const categories = await categoryService.getCategories()
     
                 return categories

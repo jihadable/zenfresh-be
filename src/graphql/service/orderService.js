@@ -29,9 +29,9 @@ class OrderService {
         return orders
     }
 
-    async updateOrderById(id, { status }){
+    async updateOrderById(id, { status, total_price }){
         await this.getOrderById(id)
-        const order = await this._model.findByIdAndUpdate(id, { status }, { new: true })
+        const order = await this._model.findByIdAndUpdate(id, { status, total_price }, { new: true })
 
         return order
     }

@@ -80,16 +80,12 @@ describe("Order API", () => {
     })
 
     test("Get categories", async() => {
-        const response = await request(app).post("/graphql")
-            .set({
-                "Authorization": `Bearer ${customer_jwt}`
-            })
-            .send({
-                query: 
-                `query {
-                    categories { id, name, price, description }
-                }`
-            })
+        const response = await request(app).post("/graphql").send({
+            query: 
+            `query {
+                categories { id, name, price, description }
+            }`
+        })
         
         expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
@@ -149,7 +145,7 @@ describe("Order API", () => {
                 query:
                 `mutation {
                     post_order(){
-                        id, status, date, 
+                        id, status, total_price, date, 
                         category { id }
                         user { id }
                     }
@@ -169,7 +165,7 @@ describe("Order API", () => {
                 query:
                 `query {
                     order(id: "${order_id}"){
-                        id, status, date, 
+                        id, status, total_price, date, 
                         category { id }
                         user { id }
                     }
@@ -183,12 +179,14 @@ describe("Order API", () => {
 
         expect(response.body.data.order).toHaveProperty("id")
         expect(response.body.data.order).toHaveProperty("status")
+        expect(response.body.data.order).toHaveProperty("total_price")
         expect(response.body.data.order).toHaveProperty("date")
         expect(response.body.data.order).toHaveProperty("category")
         expect(response.body.data.order).toHaveProperty("user")
 
         expect(response.body.data.order.id).toBe(order_id)
         expect(response.body.data.order.status).toBe("Pending confirmation")
+        expect(response.body.data.order.total_price).toBe(null)
 
         expect(response.body.data.order.category).toHaveProperty("id")
         expect(response.body.data.order.category.id).toBe(category_id)
@@ -205,7 +203,7 @@ describe("Order API", () => {
                 query:
                 `query {
                     order(id: "xxx"){
-                        id, status, date, 
+                        id, status, total_price, date, 
                         category { id }
                         user { id }
                     }
@@ -216,6 +214,72 @@ describe("Order API", () => {
         expect(Array.isArray(response.body.errors))
     })
 
+    test("Get user orders", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${customer_jwt}`
+            })
+            .send({
+                query:
+                `query {
+                    user_orders {
+                        id, status, total_price, date, 
+                        category { id }
+                        user { id }
+                    }
+                }`
+            })
+
+        expect(response.body).not.toHaveProperty("errors")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.data).toHaveProperty("user_orders")
+
+        expect(Array.isArray(response.body.data.user_orders)).toBe(true)
+        expect(response.body.data.user_orders[0]).toHaveProperty("id")
+        expect(response.body.data.user_orders[0]).toHaveProperty("status")
+        expect(response.body.data.user_orders[0]).toHaveProperty("total_price")
+        expect(response.body.data.user_orders[0]).toHaveProperty("date")
+        expect(response.body.data.user_orders[0]).toHaveProperty("category")
+        expect(response.body.data.user_orders[0]).toHaveProperty("user")
+
+        expect(response.body.data.user_orders[0].category).toHaveProperty("id")
+        expect(response.body.data.user_orders[0].user).toHaveProperty("id")
+    })
+
+    test("Get orders list as admin", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${admin_jwt}`
+            })
+            .send({
+                query:
+                `query {
+                    orders {
+                        id, status, total_price, date, 
+                        category { id }
+                        user { id }
+                    }
+                }`
+            })
+
+        expect(response.body).not.toHaveProperty("errors")
+        expect(response.body).toHaveProperty("data")
+
+        expect(response.body.data).toHaveProperty("orders")
+
+        expect(Array.isArray(response.body.data.orders)).toBe(true)
+        expect(response.body.data.orders[0]).toHaveProperty("id")
+        expect(response.body.data.orders[0]).toHaveProperty("status")
+        expect(response.body.data.orders[0]).toHaveProperty("total_price")
+        expect(response.body.data.orders[0]).toHaveProperty("date")
+        expect(response.body.data.orders[0]).toHaveProperty("category")
+        expect(response.body.data.orders[0]).toHaveProperty("user")
+
+        expect(response.body.data.orders[0].category).toHaveProperty("id")
+        expect(response.body.data.orders[0].user).toHaveProperty("id")
+    })
+
     test("Update order", async() => {
         const response = await request(app).post("/graphql")
             .set({
@@ -224,8 +288,12 @@ describe("Order API", () => {
             .send({
                 query:
                 `mutation {
-                    update_order(id: "${order_id}", status: "Pickup in progress"){
-                        id, status, date, 
+                    update_order(
+                        id: "${order_id}"
+                        status: "Pickup in progress"
+                        total_price: 7000
+                    ){
+                        id, status, total_price, date, 
                         category { id }
                         user { id }
                     }
@@ -239,12 +307,14 @@ describe("Order API", () => {
 
         expect(response.body.data.update_order).toHaveProperty("id")
         expect(response.body.data.update_order).toHaveProperty("status")
+        expect(response.body.data.update_order).toHaveProperty("total_price")
         expect(response.body.data.update_order).toHaveProperty("date")
         expect(response.body.data.update_order).toHaveProperty("category")
         expect(response.body.data.update_order).toHaveProperty("user")
 
         expect(response.body.data.update_order.id).toBe(order_id)
         expect(response.body.data.update_order.status).toBe("Pickup in progress")
+        expect(response.body.data.update_order.total_price).toBe(7000)
 
         expect(response.body.data.update_order.category).toHaveProperty("id")
         expect(response.body.data.update_order.category.id).toBe(category_id)

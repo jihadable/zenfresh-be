@@ -9,6 +9,7 @@ const OrderType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID, resolve: parent => parent._id },
         status: { type: GraphQLString },
+        total_price: { type: GraphQLInt },
         date: { type: GraphQLString },
         category: {
             type: CategoryType,

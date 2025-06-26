@@ -91,16 +91,12 @@ describe("Category API", () => {
     })
 
     test("Get categories", async() => {
-        const response = await request(app).post("/graphql")
-            .set({
-                "Authorization": `Bearer ${jwt}`
-            })
-            .send({
-                query: 
-                `query {
-                    categories { id, name, price, description }
-                }`
-            })
+        const response = await request(app).post("/graphql").send({
+            query: 
+            `query {
+                categories { id, name, price, description }
+            }`
+        })
         
         expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
@@ -115,16 +111,12 @@ describe("Category API", () => {
     })
 
     test("Get category with valid id", async() => {
-        const response = await request(app).post("/graphql")
-            .set({
-                "Authorization": `Bearer ${jwt}`
-            })
-            .send({
-                query: 
-                `query {
-                    category(id: "${category_id}"){ id, name, price, description }
-                }`
-            })
+        const response = await request(app).post("/graphql").send({
+            query: 
+            `query {
+                category(id: "${category_id}"){ id, name, price, description }
+            }`
+        })
         
         expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
@@ -142,16 +134,12 @@ describe("Category API", () => {
     })
 
     test("Get category with invalid id", async() => {
-        const response = await request(app).post("/graphql")
-            .set({
-                "Authorization": `Bearer ${jwt}`
-            })
-            .send({
-                query: 
-                `query {
-                    category(id: "xxx"){ id, name, price, description }
-                }`
-            })
+        const response = await request(app).post("/graphql").send({
+            query: 
+            `query {
+                category(id: "xxx"){ id, name, price, description }
+            }`
+        })
         
         expect(response.body).toHaveProperty("errors")
         expect(Array.isArray(response.body.errors))

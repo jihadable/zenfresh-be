@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLString, GraphQLBoolean, GraphQLNonNull } = require("graphql")
+const { GraphQLID, GraphQLString, GraphQLBoolean, GraphQLNonNull, GraphQLInt } = require("graphql")
 const OrderType = require("../../type/orderType")
 const orderService = require("../../service/orderService")
 const { authorizeRole } = require("../../../helper/auth")
@@ -25,13 +25,14 @@ const orderMutation = {
         type: OrderType,
         args: {
             id: { type: new GraphQLNonNull(GraphQLID) },
-            status: { type: new GraphQLNonNull(GraphQLString) }
+            status: { type: new GraphQLNonNull(GraphQLString) },
+            total_price: { type: new GraphQLNonNull(GraphQLInt) }
         },
-        resolve: async(_, { id, status }, context) => {
+        resolve: async(_, { id, status, total_price }, context) => {
             try {
                 authorizeRole(context, "admin")
     
-                const order = orderService.updateOrderById(id, { status })
+                const order = orderService.updateOrderById(id, { status, total_price })
     
                 return order
             } catch(error){

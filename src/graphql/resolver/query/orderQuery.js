@@ -26,7 +26,7 @@ const orderQuery = {
         }
     },
     user_orders: {
-        type: OrderType,
+        type: new GraphQLList(OrderType),
         resolve: async(_, __, context) => {
             try {
                 const { id } = authorizeRole(context, "customer")
@@ -41,7 +41,7 @@ const orderQuery = {
     },
     orders: {
         type: new GraphQLList(OrderType),
-        resolve: async() => {
+        resolve: async(_, __, context) => {
             try {
                 authorizeRole(context, "admin")
 
