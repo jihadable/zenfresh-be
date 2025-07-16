@@ -2,6 +2,7 @@ const { GraphQLID, GraphQLString, GraphQLBoolean, GraphQLNonNull, GraphQLInt } =
 const OrderType = require("../../type/orderType")
 const orderService = require("../../service/orderService")
 const { authorizeRole } = require("../../../helper/auth")
+const pubsub = require("../../../helper/pubsub")
 
 const orderMutation = {
     post_order: {
@@ -33,6 +34,8 @@ const orderMutation = {
                 authorizeRole(context, "admin")
     
                 const order = orderService.updateOrderById(id, { status, total_price })
+
+                pubsub.publish(`ORDER_UPDATED_${id}`, { order_updated: order })
     
                 return order
             } catch(error){
