@@ -50,9 +50,9 @@ const userMutation = {
             phone: { type: new GraphQLNonNull(GraphQLString) },
             address: { type: new GraphQLNonNull(GraphQLString) }
         },
-        resolve: async(_, { name, phone, address }, context) => {
+        resolve: async(_, { name, phone, address }, { authorization }) => {
             try {
-                const { id } = authorizeRole(context, "customer")
+                const { id } = authorizeRole(authorization, "customer")
 
                 const user = await userService.updateUserById(id, { name, phone, address })
     

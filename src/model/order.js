@@ -13,12 +13,18 @@ const OrderSchema = new Schema(
                 "Cancelled",
                 "Completed"
             ],
+            default: "Pending confirmation",
             required: true
         },
         total_price: Number,
         date: {
             type: Date,
             default: () => new Date(),
+            required: true
+        },
+        is_seen_by_admin: {
+            type: Boolean,
+            default: false,
             required: true
         },
         category: {

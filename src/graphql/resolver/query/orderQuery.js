@@ -1,4 +1,4 @@
-const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql")
+const { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLInt } = require("graphql")
 const orderService = require("../../service/orderService")
 const OrderType = require("../../type/orderType")
 const { authorizeRole, auth } = require("../../../helper/auth")
@@ -9,9 +9,9 @@ const orderQuery = {
         args: {
             id: { type: new GraphQLNonNull(GraphQLID) }
         },
-        resolve: async(_, { id }, context) => {
+        resolve: async(_, { id }, { authorization }) => {
             try {
-                const { id: user_id, role } = auth(context)
+                const { id: user_id, role } = auth(authorization)
 
                 const order = await orderService.getOrderById(id)
 
@@ -27,9 +27,9 @@ const orderQuery = {
     },
     user_orders: {
         type: new GraphQLList(OrderType),
-        resolve: async(_, __, context) => {
+        resolve: async(_, __, { authorization }) => {
             try {
-                const { id } = authorizeRole(context, "customer")
+                const { id } = authorizeRole(authorization, "customer")
 
                 const orders = await orderService.getOrdersByUser(id)
 
@@ -41,9 +41,9 @@ const orderQuery = {
     },
     orders: {
         type: new GraphQLList(OrderType),
-        resolve: async(_, __, context) => {
+        resolve: async(_, __, { authorization }) => {
             try {
-                authorizeRole(context, "admin")
+                authorizeRole(authorization, "admin")
 
                 const orders = await orderService.getOrders()
     
@@ -51,6 +51,16 @@ const orderQuery = {
             } catch(error){
                 throw error
             }
+        }
+    },
+    unseen_orders: {
+        type: GraphQLInt,
+        resolve: async(_, __, { authorization }) => {
+            authorizeRole(authorization, "admin")
+
+            const unseenOrders = await orderService.getUnseenOrders()
+
+            return unseenOrders.length
         }
     }
 }

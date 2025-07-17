@@ -6,7 +6,7 @@ class OrderService {
     }
 
     async addOrder({ user, category }){
-        const order = await this._model.create({ user, category, status: "Pending confirmation" })
+        const order = await this._model.create({ user, category })
 
         return order
     }
@@ -39,6 +39,18 @@ class OrderService {
     async deleteOrderById(id){
         await this.getOrderById(id)
         await this._model.deleteOne({ _id: id })
+    }
+
+    async getUnseenOrders(){
+        const orders = await this._model.find({ is_seen_by_admin: false })
+
+        return orders
+    }
+
+    async markAllSeen(){
+        await this._model.updateMany({}, { is_seen_by_admin: true })
+
+        return true
     }
 }
 

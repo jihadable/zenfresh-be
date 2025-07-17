@@ -1,8 +1,7 @@
 const { verify } = require("jsonwebtoken")
 
-const auth = context => {
+const auth = authorization => {
     try {
-        const authorization = context.header("Authorization")
         if (!authorization){
             throw new Error("Token tidak ditemukan")
         }
@@ -20,9 +19,9 @@ const auth = context => {
     }
 }
 
-const authorizeRole = (context, ...allowedRoles) => {
+const authorizeRole = (authorization, ...allowedRoles) => {
     try {
-        const user = auth(context)
+        const user = auth(authorization)
 
         if (!allowedRoles.includes(user.role)){
             throw new Error("Pengguna tidak diizinkan")

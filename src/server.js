@@ -14,7 +14,7 @@ app.use(express.json(), cors())
 connectDB()
 
 app.use("/graphql", (req, res) => {
-    return createHandler({ schema, context: () => req })(req, res)
+    return createHandler({ schema, context: () => ({ authorization: req.header("Authorization") }) })(req, res)
 })
 
 const server = createServer(app)
@@ -23,7 +23,7 @@ const wsServer = new WebSocketServer({
     path: "/graphql",
 })
 
-useServer({ schema }, wsServer)
+useServer({ schema, context: ctx => ({ authorization: ctx.connectionParams.Authorization }) }, wsServer)
 
 const PORT = process.env.PORT
 server.listen(PORT, () => {

@@ -5,9 +5,9 @@ const UserType = require("../../type/userType");
 const userQuery = {
     user: {
         type: UserType,
-        resolve: async(_, __, context) => {
+        resolve: async(_, __, { authorization }) => {
             try {
-                const { id } = auth(context)
+                const { id } = auth(authorization)
     
                 const user = await userService.getUserById(id)
     

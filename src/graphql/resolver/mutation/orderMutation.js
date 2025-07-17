@@ -10,11 +10,15 @@ const orderMutation = {
         args: {
             category: { type: new GraphQLNonNull(GraphQLID) }
         },
-        resolve: async(_, { category }, context) => {
+        resolve: async(_, { category }, { authorization }) => {
             try {
-                const { id } = authorizeRole(context, "customer")
+                const { id } = authorizeRole(authorization, "customer")
     
                 const order = await orderService.addOrder({ user: id, category })
+
+                const unseenOrders = await orderService.getUnseenOrders()
+                pubsub.publish("UNSEEN_ORDERS", { unseen_orders: unseenOrders.length })
+                pubsub.publish("ORDER_CREATED", { order_created: order })
     
                 return order
             } catch(error){
@@ -29,13 +33,13 @@ const orderMutation = {
             status: { type: new GraphQLNonNull(GraphQLString) },
             total_price: { type: new GraphQLNonNull(GraphQLInt) }
         },
-        resolve: async(_, { id, status, total_price }, context) => {
+        resolve: async(_, { id, status, total_price }, { authorization }) => {
             try {
-                authorizeRole(context, "admin")
+                authorizeRole(authorization, "admin")
     
                 const order = orderService.updateOrderById(id, { status, total_price })
 
-                pubsub.publish(`ORDER_UPDATED_${id}`, { order_updated: order })
+                pubsub.publish("ORDER_UPDATED", { order_updated: order })
     
                 return order
             } catch(error){
@@ -48,12 +52,27 @@ const orderMutation = {
         args: {
             id: { type: new GraphQLNonNull(GraphQLID) }
         },
-        resolve: async(_, { id }, context) => {
+        resolve: async(_, { id }, { authorization }) => {
             try {
-                authorizeRole(context, "admin")
+                authorizeRole(authorization, "admin")
     
                 await orderService.deleteOrderById(id)
     
+                return true
+            } catch(error){
+                throw error
+            }
+        }
+    },
+    mark_all_seen: {
+        type: GraphQLBoolean,
+        resolve: async(_, __, { authorization }) => {
+            try {
+                authorizeRole(authorization, "admin")
+
+                await orderService.markAllSeen()
+                pubsub.publish("UNSEEN_ORDERS", { unseen_orders: 0 })
+
                 return true
             } catch(error){
                 throw error

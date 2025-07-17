@@ -1,12 +1,32 @@
+const { authorizeRole, auth } = require("../../../helper/auth");
 const pubsub = require("../../../helper/pubsub");
 const OrderType = require("../../type/orderType");
-const { GraphQLID } = require("graphql");
+const { GraphQLInt } = require("graphql");
 
 const orderSubscription = {
+    unseen_orders: {
+        type: GraphQLInt,
+        subscribe: (_, __, { authorization }) => {
+            authorizeRole(authorization, "admin")
+
+            return pubsub.asyncIterableIterator("UNSEEN_ORDERS")
+        }
+    },
+    order_created: {
+        type: OrderType,
+        subscribe: (_, __, { authorization }) => {
+            authorizeRole(authorization, "admin")
+
+            return pubsub.asyncIterableIterator("ORDER_CREATED")
+        }
+    },
     order_updated: {
         type: OrderType,
-        args: { id: { type: GraphQLID } },
-        subscribe: (_, { id }) => pubsub.asyncIterableIterator(`ORDER_UPDATED_${id}`)
+        subscribe: (_, __, { authorization }) => {
+            auth(authorization)
+
+            return pubsub.asyncIterableIterator("ORDER_UPDATED")
+        }
     }
 }
 
