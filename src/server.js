@@ -4,29 +4,30 @@ const { createHandler } = require("graphql-http/lib/use/express");
 const schema = require("./graphql");
 const connectDB = require("./database/db");
 const cors = require("cors");
-const { createServer } = require("http");
-const { WebSocketServer } = require("ws");
-const { useServer } = require("graphql-ws/use/ws");
+const { auth } = require("./helper/auth");
 
 const app = express()
 app.use(express.json(), cors())
 
 connectDB()
 
+app.post("/pusher/auth", async(req, res) => {
+    try {
+        const authorization = req.header("Authorization")
+        auth(authorization)
+    } catch(error){
+        res.status(401).json({
+            status: "fail",
+            message: error.message
+        })
+    }
+})
+
 app.use("/graphql", (req, res) => {
     return createHandler({ schema, context: () => ({ authorization: req.header("Authorization") }) })(req, res)
 })
 
-const server = createServer(app)
-const wsServer = new WebSocketServer({
-    server,
-    path: "/graphql",
-})
-
-useServer({ schema, context: ctx => ({ authorization: ctx.connectionParams.Authorization }) }, wsServer)
-
 const PORT = process.env.PORT
-server.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}/graphql`)
-    console.log(`📡 Subscriptions ready at ws://localhost:${PORT}/graphql`)
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}/graphql`)
 })

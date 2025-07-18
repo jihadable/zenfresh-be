@@ -2,7 +2,9 @@ const { GraphQLID, GraphQLString, GraphQLBoolean, GraphQLNonNull, GraphQLInt } =
 const OrderType = require("../../type/orderType")
 const orderService = require("../../service/orderService")
 const { authorizeRole } = require("../../../helper/auth")
-const pubsub = require("../../../helper/pubsub")
+const { orderTrigger } = require("../../../helper/pusher")
+const categoryService = require("../../service/categoryService")
+const userService = require("../../service/userService")
 
 const orderMutation = {
     post_order: {
@@ -17,8 +19,14 @@ const orderMutation = {
                 const order = await orderService.addOrder({ user: id, category })
 
                 const unseenOrders = await orderService.getUnseenOrders()
-                pubsub.publish("UNSEEN_ORDERS", { unseen_orders: unseenOrders.length })
-                pubsub.publish("ORDER_CREATED", { order_created: order })
+                await orderTrigger("unseen_orders", unseenOrders.length)
+                const populatedOrder = {
+                    ...order.toObject?.() ?? order,
+                    id: order._id,
+                    category: await categoryService.getCategoryById(order.category),
+                    user: await userService.getUserById(order.user)
+                }
+                await orderTrigger("order_created", populatedOrder)
     
                 return order
             } catch(error){
@@ -37,9 +45,15 @@ const orderMutation = {
             try {
                 authorizeRole(authorization, "admin")
     
-                const order = orderService.updateOrderById(id, { status, total_price })
+                const order = await orderService.updateOrderById(id, { status, total_price })
 
-                pubsub.publish("ORDER_UPDATED", { order_updated: order })
+                const populatedOrder = {
+                    ...order.toObject?.() ?? order,
+                    id: order._id,
+                    category: await categoryService.getCategoryById(order.category),
+                    user: await userService.getUserById(order.user)
+                }
+                await orderTrigger("order_updated", populatedOrder)
     
                 return order
             } catch(error){
@@ -71,7 +85,7 @@ const orderMutation = {
                 authorizeRole(authorization, "admin")
 
                 await orderService.markAllSeen()
-                pubsub.publish("UNSEEN_ORDERS", { unseen_orders: 0 })
+                await orderTrigger("unseen_orders", 0)
 
                 return true
             } catch(error){
