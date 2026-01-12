@@ -3,17 +3,17 @@ const getCategories = () => {
         {
             name: "Regular",
             price: 6000,
-            description: "2 hari pengerjaan"
+            description: "2 days"
         },
         {
             name: "Express",
             price: 8000,
-            description: "1 hari pengerjaan"
+            description: "1 day"
         },
         {
             name: "Premium",
             price: 12000,
-            description: "Pengerjaan kurang dari 1 hari"
+            description: "16 hours"
         }
     ]
 }
