@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
 const CategoryType = require("../../type/categoryType");
-const categoryService = require("../../service/categoryService");
+const categoryService = require("../../../service/categoryService");
 
 const categoryQuery = {
     category: {

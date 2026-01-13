@@ -1,7 +1,7 @@
 const { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLInt } = require("graphql")
-const orderService = require("../../service/orderService")
+const orderService = require("../../../service/orderService")
 const OrderType = require("../../type/orderType")
-const { authorizeRole, auth } = require("../../../helper/auth")
+const authMiddleware = require("../../../middleware/authMiddleware")
 
 const orderQuery = {
     order: {
@@ -11,7 +11,7 @@ const orderQuery = {
         },
         resolve: async(_, { id }, { authorization }) => {
             try {
-                const { id: user_id, role } = auth(authorization)
+                const { id: user_id, role } = authMiddleware(authorization)
 
                 const order = await orderService.getOrderById(id)
 
@@ -29,7 +29,7 @@ const orderQuery = {
         type: new GraphQLList(OrderType),
         resolve: async(_, __, { authorization }) => {
             try {
-                const { id } = authorizeRole(authorization, "customer")
+                const { id } = authMiddleware(authorization, "customer")
 
                 const orders = await orderService.getOrdersByUser(id)
 
@@ -43,7 +43,7 @@ const orderQuery = {
         type: new GraphQLList(OrderType),
         resolve: async(_, __, { authorization }) => {
             try {
-                authorizeRole(authorization, "admin")
+                authMiddleware(authorization, "admin")
 
                 const orders = await orderService.getOrders()
     
@@ -56,7 +56,7 @@ const orderQuery = {
     unseen_orders: {
         type: GraphQLInt,
         resolve: async(_, __, { authorization }) => {
-            authorizeRole(authorization, "admin")
+            authMiddleware(authorization, "admin")
 
             const unseenOrders = await orderService.getUnseenOrders()
 

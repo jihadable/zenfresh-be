@@ -1,5 +1,5 @@
-const { auth } = require("../../../helper/auth");
-const userService = require("../../service/userService");
+const authMiddleware = require("../../../middleware/authMiddleware");
+const userService = require("../../../service/userService");
 const UserType = require("../../type/userType");
 
 const userQuery = {
@@ -7,7 +7,7 @@ const userQuery = {
         type: UserType,
         resolve: async(_, __, { authorization }) => {
             try {
-                const { id } = auth(authorization)
+                const { id } = authMiddleware(authorization)
     
                 const user = await userService.getUserById(id)
     

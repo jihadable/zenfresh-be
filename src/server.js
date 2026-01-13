@@ -2,19 +2,22 @@ require("dotenv").config();
 const express = require("express");
 const { createHandler } = require("graphql-http/lib/use/express");
 const schema = require("./graphql");
-const connectDB = require("./database/db");
 const cors = require("cors");
-const { auth } = require("./helper/auth");
+const path = require("path");
+const authMiddleware = require("./middleware/authMiddleware");
+const connectDB = require("./config/database/db");
 
 const app = express()
 app.use(express.json(), cors())
 
 connectDB()
 
+app.use("/asset", express.static(path.join(__dirname, "asset")))
+
 app.post("/pusher/auth", async(req, res) => {
     try {
         const authorization = req.header("Authorization")
-        auth(authorization)
+        authMiddleware(authorization)
     } catch(error){
         res.status(401).json({
             status: "fail",

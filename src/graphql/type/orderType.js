@@ -1,8 +1,8 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID } = require("graphql");
 const CategoryType = require("./categoryType");
 const UserType = require("./userType");
-const categoryService = require("../service/categoryService");
-const userService = require("../service/userService");
+const categoryService = require("../../service/categoryService");
+const userService = require("../../service/userService");
 
 const OrderType = new GraphQLObjectType({
     name: "OrderType",

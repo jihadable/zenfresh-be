@@ -1,10 +1,10 @@
 const { GraphQLID, GraphQLString, GraphQLBoolean, GraphQLNonNull, GraphQLInt } = require("graphql")
 const OrderType = require("../../type/orderType")
-const orderService = require("../../service/orderService")
-const { authorizeRole } = require("../../../helper/auth")
-const { orderTrigger } = require("../../../helper/pusher")
-const categoryService = require("../../service/categoryService")
-const userService = require("../../service/userService")
+const { orderTrigger } = require("../../../config/pusher")
+const orderService = require("../../../service/orderService")
+const categoryService = require("../../../service/categoryService")
+const userService = require("../../../service/userService")
+const authMiddleware = require("../../../middleware/authMiddleware")
 
 const orderMutation = {
     post_order: {
@@ -14,7 +14,7 @@ const orderMutation = {
         },
         resolve: async(_, { category }, { authorization }) => {
             try {
-                const { id } = authorizeRole(authorization, "customer")
+                const { id } = authMiddleware(authorization, "customer")
     
                 const order = await orderService.addOrder({ user: id, category })
 
@@ -43,7 +43,7 @@ const orderMutation = {
         },
         resolve: async(_, { id, status, total_price }, { authorization }) => {
             try {
-                authorizeRole(authorization, "admin")
+                authMiddleware(authorization, "admin")
     
                 const order = await orderService.updateOrderById(id, { status, total_price })
 
@@ -68,7 +68,7 @@ const orderMutation = {
         },
         resolve: async(_, { id }, { authorization }) => {
             try {
-                authorizeRole(authorization, "admin")
+                authMiddleware(authorization, "admin")
     
                 await orderService.deleteOrderById(id)
     
@@ -82,7 +82,7 @@ const orderMutation = {
         type: GraphQLBoolean,
         resolve: async(_, __, { authorization }) => {
             try {
-                authorizeRole(authorization, "admin")
+                authMiddleware(authorization, "admin")
 
                 await orderService.markAllSeen()
                 await orderTrigger("unseen_orders", 0)

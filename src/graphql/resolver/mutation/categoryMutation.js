@@ -1,7 +1,7 @@
 const { GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLID, GraphQLNonNull } = require("graphql");
 const CategoryType = require("../../type/categoryType");
-const categoryService = require("../../service/categoryService");
-const { authorizeRole } = require("../../../helper/auth");
+const categoryService = require("../../../service/categoryService");
+const authMiddleware = require("../../../middleware/authMiddleware");
 
 const categoryMutation = {
     post_category: {
@@ -13,7 +13,7 @@ const categoryMutation = {
         },
         resolve: async(_, { name, price, description }, { authorization }) => {
             try {
-                authorizeRole(authorization, "admin")
+                authMiddleware(authorization, "admin")
 
                 const category = await categoryService.addCategory({ name, price, description })
     
@@ -30,7 +30,7 @@ const categoryMutation = {
         },
         resolve: async(_, { id }, { authorization }) => {
             try {
-                authorizeRole(authorization, "admin")
+                authMiddleware(authorization, "admin")
                 
                 await categoryService.deleteCategoryById(id)
     

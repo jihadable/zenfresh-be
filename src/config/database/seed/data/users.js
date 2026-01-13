@@ -16,7 +16,8 @@ const getUsers = async() => {
             name: "umar jihad",
             password: await hash(password, 10),
             phone: "082352395596",
-            address: "Jl. Langsat"
+            address: "Jl. Langsat",
+            is_email_verified: true
         }
     ]
 }

@@ -1,4 +1,4 @@
-const Category = require("../../model/category");
+const Category = require("../model/category");
 
 class CategoryService {
     constructor(){
@@ -28,8 +28,11 @@ class CategoryService {
     }
 
     async deleteCategoryById(id){
-        await this.getCategoryById(id)
-        const category = await this._model.deleteOne({ _id: id })
+        const order = await this._model.deleteOne({ _id: id })
+
+        if (order.deletedCount == 0){
+            throw new Error("Kategori tidak ditemukan")
+        }
     }
 }
 

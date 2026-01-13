@@ -4,7 +4,7 @@ const UserType = require("./userType");
 const AuthPayloadType = new GraphQLObjectType({
     name: "AuthPayloadType",
     fields: () => ({
-        token: { type: GraphQLString },
+        jwt: { type: GraphQLString },
         user: { type: UserType }
     })
 })

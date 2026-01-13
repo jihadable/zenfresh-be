@@ -1,4 +1,4 @@
-const Order = require("../../model/order");
+const Order = require("../model/order");
 
 class OrderService {
     constructor(){
@@ -13,6 +13,10 @@ class OrderService {
 
     async getOrderById(id){
         const order = await this._model.findById(id)
+
+        if (!order){
+            throw new Error("Pemesanan tidak ditemukan")
+        }
 
         return order
     }
@@ -30,15 +34,21 @@ class OrderService {
     }
 
     async updateOrderById(id, { status, total_price }){
-        await this.getOrderById(id)
         const order = await this._model.findByIdAndUpdate(id, { status, total_price }, { new: true })
+
+        if (!order){
+            throw new Error("Pemesanan tidak ditemukan")
+        }
 
         return order
     }
 
     async deleteOrderById(id){
-        await this.getOrderById(id)
-        await this._model.deleteOne({ _id: id })
+        const order = await this._model.deleteOne({ _id: id })
+
+        if (order.deletedCount == 0){
+            throw new Error("Pemesanan tidak ditemukan")
+        }
     }
 
     async getUnseenOrders(){

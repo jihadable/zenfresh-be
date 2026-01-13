@@ -1,9 +1,9 @@
-const { GraphQLString, GraphQLID, GraphQLNonNull } = require("graphql");
+const { GraphQLString, GraphQLNonNull } = require("graphql");
 const AuthPayloadType = require("../../type/authPayloadType");
 const UserType = require("../../type/userType");
-const userService = require("../../service/userService");
-const { authorizeRole } = require("../../../helper/auth");
-const generateJWT = require("../../../utils/generateJWT");
+const userService = require("../../../service/userService");
+const authMiddleware = require("../../../middleware/authMiddleware");
+const { getJWT } = require("../../../helper/tokenizer");
 
 const userMutation = {
     register: {
@@ -17,10 +17,10 @@ const userMutation = {
         },
         resolve: async(_, { name, email, password, phone, address }) => {
             try {
-                const user = await userService.addUser({ name, email, password, phone, address })
-                const token = generateJWT(user._id, user.role)
+                const user = await userService.addUser({ name, email, password, phone, address, role: "customer", is_email_verified: false })
+                const jwt = getJWT(user._id, user.role)
     
-                return { token, user }
+                return { jwt, user }
             } catch(error){
                 throw error
             }
@@ -35,9 +35,9 @@ const userMutation = {
         resolve: async(_, { email, password }) => {
             try {
                 const user = await userService.verifyUser(email, password)
-                const token = generateJWT(user._id, user.role)
+                const jwt = getJWT(user._id, user.role)
     
-                return { token, user }
+                return { jwt, user }
             } catch(error){
                 throw error
             }
@@ -52,7 +52,7 @@ const userMutation = {
         },
         resolve: async(_, { name, phone, address }, { authorization }) => {
             try {
-                const { id } = authorizeRole(authorization, "customer")
+                const { id } = authMiddleware(authorization, "customer")
 
                 const user = await userService.updateUserById(id, { name, phone, address })
     

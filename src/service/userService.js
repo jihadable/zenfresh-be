@@ -1,0 +1,86 @@
+const { hash, compareSync } = require("bcrypt")
+const User = require("../model/user")
+const { startSession } = require("mongoose")
+const EmailVerification = require("../model/emailVerification")
+const { getToken } = require("../helper/tokenizer")
+const { sendEmailVerification } = require("../helper/mailer")
+
+class UserService {
+    constructor(){
+        this._model = User
+        this._emailVerificationModel = EmailVerification
+    }
+
+    async addUser({ name, email, password, phone, address, role, is_email_verified }){
+        const session = await startSession()
+        session.startTransaction()
+
+        try {
+            const hashedPassword = await hash(password, 10)
+    
+            const user = await this._model.create({
+                name,
+                email,
+                password: hashedPassword,
+                phone,
+                address,
+                role,
+                is_email_verified
+            }, { session })
+
+            const token = getToken()
+            const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
+            const emailVerification = await this._emailVerificationModel.create({ user: user._id, token, expires_at: expireTime }, { session })
+    
+            await session.commitTransaction()
+
+            const emailVerificationLink = `${process.env.WEB_ENDPOINT}/verify-email/${emailVerification.token}`
+            await sendEmailVerification(user.email, emailVerificationLink)
+
+            return user
+        } catch(error){
+            await session.abortTransaction()
+            throw error
+        } finally {
+            await session.endSession()
+        }
+    }
+
+    async getUserById(id){
+        const user = await this._model.findById(id)
+
+        if (!user){
+            throw new Error("Pengguna tidak ditemukan")
+        }
+
+        return user
+    }
+
+    async verifyUser(email, password){
+        const user = await this._model.findOne({ email })
+
+        if (!user){
+            throw new Error("Pengguna tidak ditemukan")
+        }
+
+        if (!compareSync(password, user.password)){
+            throw new Error("Email atau password salah")
+        }
+
+        return user
+    }
+
+    async updateUserById(id, { name, phone, address }){
+        const user = await this._model.findByIdAndUpdate(id, { name, phone, address }, { new: true })
+
+        if (!user){
+            throw new Error("Pengguna tidak ditemukan")
+        }
+
+        return user
+    }
+}
+
+const userService = new UserService()
+
+module.exports = userService
