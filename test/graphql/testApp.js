@@ -2,8 +2,8 @@ require("dotenv").config()
 const express = require("express")
 const { createHandler } = require('graphql-http/lib/use/express');
 const schema = require("../../src/graphql");
-const connectDB = require("../../src/database/db");
-const cors = require("cors")
+const cors = require("cors");
+const connectDB = require("../../src/config/database/db");
 
 const app = express()
 app.use(express.json(), cors())

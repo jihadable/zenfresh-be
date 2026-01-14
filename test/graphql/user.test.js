@@ -9,7 +9,7 @@ describe("User API", () => {
         await mongoose.connection.close()
     })
 
-    test("Register with valid payload", async() => {
+    test("Register", async() => {
         const response = await request(app).post("/graphql").send({
             query:
             `mutation {
@@ -20,8 +20,8 @@ describe("User API", () => {
                     phone: "081234567890"
                     address: "Jl. Langsat"
                 ){
-                    token
-                    user { id, name, email, phone, address, role }
+                    jwt
+                    user { id, name, email, phone, address, role, is_email_verified }
                 }
             }`
         })
@@ -31,8 +31,8 @@ describe("User API", () => {
         
         expect(response.body.data).toHaveProperty("register")
 
-        expect(response.body.data.register).toHaveProperty("token")
-        jwt = response.body.data.register.token
+        expect(response.body.data.register).toHaveProperty("jwt")
+        jwt = response.body.data.register.jwt
         expect(response.body.data.register).toHaveProperty("user")
 
         expect(response.body.data.register.user).toHaveProperty("id")
@@ -41,12 +41,14 @@ describe("User API", () => {
         expect(response.body.data.register.user).toHaveProperty("phone")
         expect(response.body.data.register.user).toHaveProperty("address")
         expect(response.body.data.register.user).toHaveProperty("role")
+        expect(response.body.data.register.user).toHaveProperty("is_email_verified")
 
         expect(response.body.data.register.user.name).toBe("test")
         expect(response.body.data.register.user.email).toBe("test@gmail.com")
         expect(response.body.data.register.user.phone).toBe("081234567890")
         expect(response.body.data.register.user.address).toBe("Jl. Langsat")
         expect(response.body.data.register.user.role).toBe("customer")
+        expect(response.body.data.register.user.is_email_verified).toBe(false)
     })
 
     test("Register with invalid payload", async() => {
@@ -54,8 +56,8 @@ describe("User API", () => {
             query:
             `mutation {
                 register(){
-                    token
-                    user { id, name, email, phone, address }
+                    jwt
+                    user { id, name, email, phone, address, is_email_verified }
                 }
             }`
         })
@@ -64,7 +66,7 @@ describe("User API", () => {
         expect(Array.isArray(response.body.errors)).toBe(true)
     })
 
-    test("Get user data with token", async() => {
+    test("Get user data", async() => {
         const response = await request(app).post("/graphql")
             .set({
                 "Authorization": `Bearer ${jwt}`
@@ -72,7 +74,7 @@ describe("User API", () => {
             .send({
                 query:
                 `query {
-                    user { id, name, email, phone, address, role }
+                    user { id, name, email, phone, address, role, is_email_verified }
                 }`
             })
         
@@ -87,19 +89,21 @@ describe("User API", () => {
         expect(response.body.data.user).toHaveProperty("phone")
         expect(response.body.data.user).toHaveProperty("address")
         expect(response.body.data.user).toHaveProperty("role")
+        expect(response.body.data.user).toHaveProperty("is_email_verified")
 
         expect(response.body.data.user.name).toBe("test")
         expect(response.body.data.user.email).toBe("test@gmail.com")
         expect(response.body.data.user.phone).toBe("081234567890")
         expect(response.body.data.user.address).toBe("Jl. Langsat")
         expect(response.body.data.user.role).toBe("customer")
+        expect(response.body.data.user.is_email_verified).toBe(false)
     })
 
-    test("Get user data without token", async() => {
+    test("Get user data without jwt", async() => {
         const response = await request(app).post("/graphql").send({
             query:
             `query {
-                user { id, name, email, phone, address, role }
+                user { id, name, email, phone, address, role, is_email_verified }
             }`
         })
 
@@ -120,7 +124,7 @@ describe("User API", () => {
                         phone: "081122334455",
                         address: "Jl. Durian"
                     ){
-                        id, name, email, phone, address, role    
+                        id, name, email, phone, address, role, is_email_verified
                     }
                 }`
             })
@@ -136,15 +140,36 @@ describe("User API", () => {
         expect(response.body.data.update_user).toHaveProperty("phone")
         expect(response.body.data.update_user).toHaveProperty("address")
         expect(response.body.data.update_user).toHaveProperty("role")
+        expect(response.body.data.update_user).toHaveProperty("is_email_verified")
 
         expect(response.body.data.update_user.name).toBe("update test")
         expect(response.body.data.update_user.email).toBe("test@gmail.com")
         expect(response.body.data.update_user.phone).toBe("081122334455")
         expect(response.body.data.update_user.address).toBe("Jl. Durian")
         expect(response.body.data.update_user.role).toBe("customer")
+        expect(response.body.data.update_user.is_email_verified).toBe(false)
     })
 
-    test("Login with valid payload", async() => {
+    test("Update user data without jwt", async() => {
+        const response = await request(app).post("/graphql")
+            .send({
+                query:
+                `mutation {
+                    update_user(
+                        name: "update test"
+                        phone: "081122334455",
+                        address: "Jl. Durian"
+                    ){
+                        id, name, email, phone, address, role, is_email_verified
+                    }
+                }`
+            })
+
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors)).toBe(true)
+    })
+
+    test("Login", async() => {
         const response = await request(app).post("/graphql").send({
             query: 
             `mutation {
@@ -152,8 +177,8 @@ describe("User API", () => {
                     email: "test@gmail.com"
                     password: "${process.env.PRIVATE_PASSWORD}"
                 ){
-                    token
-                    user { id, name, email, phone, address, role }
+                    jwt
+                    user { id, name, email, phone, address, role, is_email_verified }
                 }
             }`
         })
@@ -163,7 +188,7 @@ describe("User API", () => {
         
         expect(response.body.data).toHaveProperty("login")
 
-        expect(response.body.data.login).toHaveProperty("token")
+        expect(response.body.data.login).toHaveProperty("jwt")
         expect(response.body.data.login).toHaveProperty("user")
 
         expect(response.body.data.login.user).toHaveProperty("id")
@@ -172,12 +197,14 @@ describe("User API", () => {
         expect(response.body.data.login.user).toHaveProperty("phone")
         expect(response.body.data.login.user).toHaveProperty("address")
         expect(response.body.data.login.user).toHaveProperty("role")
+        expect(response.body.data.login.user).toHaveProperty("is_email_verified")
 
         expect(response.body.data.login.user.name).toBe("update test")
         expect(response.body.data.login.user.email).toBe("test@gmail.com")
         expect(response.body.data.login.user.phone).toBe("081122334455")
         expect(response.body.data.login.user.address).toBe("Jl. Durian")
         expect(response.body.data.login.user.role).toBe("customer")
+        expect(response.body.data.login.user.is_email_verified).toBe(false)
     })
 
     test("Login with invalid payload", async() => {
@@ -185,8 +212,8 @@ describe("User API", () => {
             query:
             `mutation {
                 login(){
-                    token
-                    user { id, name, email, phone, address, role }
+                    jwt
+                    user { id, name, email, phone, address, role, is_email_verified }
                 }
             }`
         })

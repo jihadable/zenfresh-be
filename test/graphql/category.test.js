@@ -17,7 +17,7 @@ describe("Category API", () => {
                     email: "zenfreshadmin@gmail.com",
                     password: "${process.env.PRIVATE_PASSWORD}"
                 ){
-                    token
+                    jwt,
                     user { id, name, email, role }    
                 }
             }`
@@ -28,8 +28,8 @@ describe("Category API", () => {
         
         expect(response.body.data).toHaveProperty("login")
 
-        expect(response.body.data.login).toHaveProperty("token")
-        jwt = response.body.data.login.token
+        expect(response.body.data.login).toHaveProperty("jwt")
+        jwt = response.body.data.login.jwt
         expect(response.body.data.login).toHaveProperty("user")
 
         expect(response.body.data.login.user).toHaveProperty("id")
@@ -42,7 +42,7 @@ describe("Category API", () => {
         expect(response.body.data.login.user.role).toBe("admin")
     })
 
-    test("Create category with valid payload", async() => {
+    test("Create category", async() => {
         const response = await request(app).post("/graphql")
             .set({
                 "Authorization": `Bearer ${jwt}`
@@ -90,6 +90,19 @@ describe("Category API", () => {
         expect(Array.isArray(response.body.errors)).toBe(true)
     })
 
+    test("Create category without jwt", async() => {
+        const response = await request(app).post("/graphql")
+            .send({
+                query:
+                `mutation {
+                    post_category(){ id, name, price, description }
+                }`
+            })
+
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors)).toBe(true)
+    })
+
     test("Get categories", async() => {
         const response = await request(app).post("/graphql").send({
             query: 
@@ -110,11 +123,13 @@ describe("Category API", () => {
         expect(response.body.data.categories[0]).toHaveProperty("description")
     })
 
-    test("Get category with valid id", async() => {
+    test("Get category by id", async() => {
         const response = await request(app).post("/graphql").send({
             query: 
             `query {
-                category(id: "${category_id}"){ id, name, price, description }
+                category(id: "${category_id}"){
+                    id, name, price, description
+                }
             }`
         })
         
@@ -137,7 +152,9 @@ describe("Category API", () => {
         const response = await request(app).post("/graphql").send({
             query: 
             `query {
-                category(id: "xxx"){ id, name, price, description }
+                category(id: "xxx"){
+                    id, name, price, description
+                }
             }`
         })
         
@@ -145,7 +162,7 @@ describe("Category API", () => {
         expect(Array.isArray(response.body.errors))
     })
 
-    test("Delete category", async() => {
+    test("Delete category by id", async() => {
         const response = await request(app).post("/graphql")
             .set({
                 "Authorization": `Bearer ${jwt}`
@@ -163,5 +180,34 @@ describe("Category API", () => {
         expect(response.body.data).toHaveProperty("delete_category")
 
         expect(response.body.data.delete_category).toBe(true)
+    })
+
+    test("Delete category with invalid id", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${jwt}`
+            })
+            .send({
+                query:
+                `mutation {
+                    delete_category(id: "xxx")
+                }`
+            })
+        
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors))
+    })
+
+    test("Delete category without jwt", async() => {
+        const response = await request(app).post("/graphql")
+            .send({
+                query:
+                `mutation {
+                    delete_category(id: "${jwt}")
+                }`
+            })
+
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors))
     })
 })

@@ -18,7 +18,7 @@ class UserService {
         try {
             const hashedPassword = await hash(password, 10)
     
-            const user = await this._model.create({
+            const [ user ] = await this._model.create([{
                 name,
                 email,
                 password: hashedPassword,
@@ -26,11 +26,15 @@ class UserService {
                 address,
                 role,
                 is_email_verified
-            }, { session })
+            }], { session })
 
             const token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
-            const emailVerification = await this._emailVerificationModel.create({ user: user._id, token, expires_at: expireTime }, { session })
+            const [ emailVerification ] = await this._emailVerificationModel.create([{
+                user: user._id,
+                token,
+                expires_at: expireTime
+            }], { session })
     
             await session.commitTransaction()
 

@@ -22,13 +22,13 @@ class OrderService {
     }
 
     async getOrdersByUser(user){
-        const orders = await this._model.find({ user })
+        const orders = await this._model.find({ user }).sort({ createdAt: -1 })
 
         return orders
     }
 
     async getOrders(){
-        const orders = await this._model.find()
+        const orders = await this._model.find().sort({ createdAt: -1 })
 
         return orders
     }
@@ -52,7 +52,7 @@ class OrderService {
     }
 
     async getUnseenOrders(){
-        const orders = await this._model.find({ is_seen_by_admin: false })
+        const orders = await this._model.find({ is_seen_by_admin: false }).sort({ createdAt: -1 })
 
         return orders
     }

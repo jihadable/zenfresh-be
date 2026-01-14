@@ -3,7 +3,7 @@ const UserType = require("../../type/userType")
 const emailVerificationService = require("../../../service/emailVerificationService")
 const authMiddleware = require("../../../middleware/authMiddleware")
 
-const emailVerificationQuery = {
+const emailVerificationMutation = {
     verify_email: {
         type: UserType,
         args: {
@@ -35,4 +35,4 @@ const emailVerificationQuery = {
     }
 }
 
-module.exports = emailVerificationQuery
+module.exports = emailVerificationMutation

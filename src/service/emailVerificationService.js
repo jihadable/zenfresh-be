@@ -48,18 +48,22 @@ class EmailVerificationService {
         const session = await startSession()
         session.startTransaction()
 
-        try {
-            const user = this._userModel.findOne({ _id: userId }, null, { session })
+        let user, token
 
-            const token = getToken()
+        try {
+            user = await this._userModel.findOne({ _id: userId }, null, { session })
+
+            token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
-            const emailVerification = await this._model.create({ user: user._id, token, expires_at: expireTime }, { session })
+            const [ emailVerification ] = await this._model.create([{
+                user: user._id,
+                token,
+                expires_at: expireTime
+            }], { session })
 
             await session.commitTransaction()
 
-            const emailVerificationLink = `${process.env.WEB_ENDPOINT}/verify-email/${emailVerification.token}`
-            await sendEmailVerification(user.email, emailVerificationLink)
-
+            
             return user
         } catch(error){
             await session.abortTransaction()
@@ -67,6 +71,9 @@ class EmailVerificationService {
         } finally {
             await session.endSession()
         }
+
+        const emailVerificationLink = `${process.env.WEB_ENDPOINT}/verify-email/${token}`
+        await sendEmailVerification(user.email, emailVerificationLink)
     }
 }
 

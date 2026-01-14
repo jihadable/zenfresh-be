@@ -18,7 +18,7 @@ const userMutation = {
         resolve: async(_, { name, email, password, phone, address }) => {
             try {
                 const user = await userService.addUser({ name, email, password, phone, address, role: "customer", is_email_verified: false })
-                const jwt = getJWT(user._id, user.role)
+                const jwt = getJWT({ id: user._id, role: user.role, is_email_verified: user.is_email_verified })
     
                 return { jwt, user }
             } catch(error){
@@ -35,7 +35,7 @@ const userMutation = {
         resolve: async(_, { email, password }) => {
             try {
                 const user = await userService.verifyUser(email, password)
-                const jwt = getJWT(user._id, user.role)
+                const jwt = getJWT({ id: user._id, role: user.role, is_email_verified: user.is_email_verified })
     
                 return { jwt, user }
             } catch(error){

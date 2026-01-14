@@ -5,6 +5,7 @@ const orderService = require("../../../service/orderService")
 const categoryService = require("../../../service/categoryService")
 const userService = require("../../../service/userService")
 const authMiddleware = require("../../../middleware/authMiddleware")
+const emailVerifiedMiddleware = require("../../../middleware/emailVerificationMiddleware")
 
 const orderMutation = {
     post_order: {
@@ -14,14 +15,15 @@ const orderMutation = {
         },
         resolve: async(_, { category }, { authorization }) => {
             try {
-                const { id } = authMiddleware(authorization, "customer")
+                const { id, is_email_verified } = authMiddleware(authorization, "customer")
+                emailVerifiedMiddleware(is_email_verified)
     
                 const order = await orderService.addOrder({ user: id, category })
 
                 const unseenOrders = await orderService.getUnseenOrders()
                 await orderTrigger("unseen_orders", unseenOrders.length)
                 const populatedOrder = {
-                    ...order.toObject?.() ?? order,
+                    ...order.toObject(),
                     id: order._id,
                     category: await categoryService.getCategoryById(order.category),
                     user: await userService.getUserById(order.user)
@@ -48,7 +50,7 @@ const orderMutation = {
                 const order = await orderService.updateOrderById(id, { status, total_price })
 
                 const populatedOrder = {
-                    ...order.toObject?.() ?? order,
+                    ...order.toObject(),
                     id: order._id,
                     category: await categoryService.getCategoryById(order.category),
                     user: await userService.getUserById(order.user)

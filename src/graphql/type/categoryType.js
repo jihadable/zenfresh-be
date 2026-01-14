@@ -1,12 +1,12 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID, GraphQLNonNull } = require("graphql");
 
 const CategoryType = new GraphQLObjectType({
     name: "CategoryType",
     fields: () => ({
-        id: { type: GraphQLID, resolve: parent => parent._id },
-        name: { type: GraphQLString },
-        price: { type: GraphQLInt },
-        description: { type: GraphQLString }
+        id: { type: new GraphQLNonNull(GraphQLID), resolve: parent => parent._id },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        price: { type: new GraphQLNonNull(GraphQLInt) },
+        description: { type: new GraphQLNonNull(GraphQLString) }
     })
 })
 

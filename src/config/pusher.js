@@ -11,4 +11,8 @@ const orderTrigger = async(event, data) => {
     await pusher.trigger("order_channel", event, data)   
 }
 
-module.exports = { orderTrigger }
+const emailVerificationTrigger = async(event, data) => {
+    await pusher.trigger("email_verification_channel", event, data)
+}
+
+module.exports = { orderTrigger, emailVerificationTrigger }
