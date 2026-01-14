@@ -16,8 +16,8 @@ const userWithEmailVerificationSeed = async() => {
     try {
         const password = await hash(process.env.PRIVATE_PASSWORD, 10)
         const [ user ] = await User.create([{
-            name: "test",
-            email: "test3@gmail.com",
+            name: "jihad umar",
+            email: "jihadumar1021@gmail.com",
             password,
             phone: "082352395596",
             address: "Jl. Langsat",

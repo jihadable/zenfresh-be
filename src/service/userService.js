@@ -15,10 +15,12 @@ class UserService {
         const session = await startSession()
         session.startTransaction()
 
+        let user, token
+
         try {
             const hashedPassword = await hash(password, 10)
     
-            const [ user ] = await this._model.create([{
+            const users = await this._model.create([{
                 name,
                 email,
                 password: hashedPassword,
@@ -27,27 +29,28 @@ class UserService {
                 role,
                 is_email_verified
             }], { session })
+            user = users[0]
 
-            const token = getToken()
+            token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
-            const [ emailVerification ] = await this._emailVerificationModel.create([{
+            await this._emailVerificationModel.create([{
                 user: user._id,
                 token,
                 expires_at: expireTime
             }], { session })
     
             await session.commitTransaction()
-
-            const emailVerificationLink = `${process.env.WEB_ENDPOINT}/verify-email/${emailVerification.token}`
-            await sendEmailVerification(user.email, emailVerificationLink)
-
-            return user
         } catch(error){
             await session.abortTransaction()
             throw error
         } finally {
             await session.endSession()
         }
+        
+        const emailVerificationLink = `${process.env.WEB_ENDPOINT}/verify-email/${token}`
+        await sendEmailVerification(user.email, emailVerificationLink)
+
+        return user
     }
 
     async getUserById(id){

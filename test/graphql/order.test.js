@@ -327,6 +327,7 @@ describe("Order API", () => {
                 }`
             })
 
+        console.log(response.body.data.orders)
         expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
 
@@ -340,18 +341,18 @@ describe("Order API", () => {
         expect(response.body.data.orders[0]).toHaveProperty("category")
         expect(response.body.data.orders[0]).toHaveProperty("user")
 
-        expect(response.body.data.user_orders[0].category).toHaveProperty("id")
-        expect(response.body.data.user_orders[0].category).toHaveProperty("name")
-        expect(response.body.data.user_orders[0].category).toHaveProperty("price")
-        expect(response.body.data.user_orders[0].category).toHaveProperty("description")
+        expect(response.body.data.orders[0].category).toHaveProperty("id")
+        expect(response.body.data.orders[0].category).toHaveProperty("name")
+        expect(response.body.data.orders[0].category).toHaveProperty("price")
+        expect(response.body.data.orders[0].category).toHaveProperty("description")
 
-        expect(response.body.data.user_orders[0].user).toHaveProperty("id")
-        expect(response.body.data.user_orders[0].user).toHaveProperty("name")
-        expect(response.body.data.user_orders[0].user).toHaveProperty("email")
-        expect(response.body.data.user_orders[0].user).toHaveProperty("phone")
-        expect(response.body.data.user_orders[0].user).toHaveProperty("address")
-        expect(response.body.data.user_orders[0].user).toHaveProperty("role")
-        expect(response.body.data.user_orders[0].user).toHaveProperty("is_email_verified")
+        expect(response.body.data.orders[0].user).toHaveProperty("id")
+        expect(response.body.data.orders[0].user).toHaveProperty("name")
+        expect(response.body.data.orders[0].user).toHaveProperty("email")
+        expect(response.body.data.orders[0].user).toHaveProperty("phone")
+        expect(response.body.data.orders[0].user).toHaveProperty("address")
+        expect(response.body.data.orders[0].user).toHaveProperty("role")
+        expect(response.body.data.orders[0].user).toHaveProperty("is_email_verified")
     })
 
     test("Get orders as customer", async() => {

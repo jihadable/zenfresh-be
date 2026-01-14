@@ -3,22 +3,20 @@ const app = require("./testApp")
 const mongoose = require("mongoose")
 
 describe("Email Verification API", () => {
-    let customer_jwt, admin_jwt, email_verification_token
+    let customer_jwt, admin_jwt
+    const email_verification_token = process.env.EMAIL_VERIFICATION_TOKEN
 
     afterAll(async() => {
         await mongoose.connection.close()
     })
 
-    test("Register", async() => {
+    test("Login as customer", async() => {
         const response = await request(app).post("/graphql").send({
             query:
             `mutation {
-                register(
-                    name: "test"
-                    email: "test2@gmail.com"
+                login(
+                    email: "jihadumar1021@gmail.com"
                     password: "${process.env.PRIVATE_PASSWORD}"
-                    phone: "081234567890"
-                    address: "Jl. Langsat"
                 ){
                     jwt,
                     user { id, name, email, phone, address, role, is_email_verified }
@@ -29,26 +27,26 @@ describe("Email Verification API", () => {
         expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
         
-        expect(response.body.data).toHaveProperty("register")
+        expect(response.body.data).toHaveProperty("login")
 
-        expect(response.body.data.register).toHaveProperty("jwt")
-        customer_jwt = response.body.data.register.jwt
-        expect(response.body.data.register).toHaveProperty("user")
+        expect(response.body.data.login).toHaveProperty("jwt")
+        customer_jwt = response.body.data.login.jwt
+        expect(response.body.data.login).toHaveProperty("user")
 
-        expect(response.body.data.register.user).toHaveProperty("id")
-        expect(response.body.data.register.user).toHaveProperty("name")
-        expect(response.body.data.register.user).toHaveProperty("email")
-        expect(response.body.data.register.user).toHaveProperty("phone")
-        expect(response.body.data.register.user).toHaveProperty("address")
-        expect(response.body.data.register.user).toHaveProperty("role")
-        expect(response.body.data.register.user).toHaveProperty("is_email_verified")
+        expect(response.body.data.login.user).toHaveProperty("id")
+        expect(response.body.data.login.user).toHaveProperty("name")
+        expect(response.body.data.login.user).toHaveProperty("email")
+        expect(response.body.data.login.user).toHaveProperty("phone")
+        expect(response.body.data.login.user).toHaveProperty("address")
+        expect(response.body.data.login.user).toHaveProperty("role")
+        expect(response.body.data.login.user).toHaveProperty("is_email_verified")
 
-        expect(response.body.data.register.user.name).toBe("test")
-        expect(response.body.data.register.user.email).toBe("test2@gmail.com")
-        expect(response.body.data.register.user.phone).toBe("081234567890")
-        expect(response.body.data.register.user.address).toBe("Jl. Langsat")
-        expect(response.body.data.register.user.role).toBe("customer")
-        expect(response.body.data.register.user.is_email_verified).toBe(false)
+        expect(response.body.data.login.user.name).toBe("jihad umar")
+        expect(response.body.data.login.user.email).toBe("jihadumar1021@gmail.com")
+        expect(response.body.data.login.user.phone).toBe("082352395596")
+        expect(response.body.data.login.user.address).toBe("Jl. Langsat")
+        expect(response.body.data.login.user.role).toBe("customer")
+        expect(response.body.data.login.user.is_email_verified).toBe(false)
     })
 
     test("Login as admin", async() => {
@@ -111,9 +109,9 @@ describe("Email Verification API", () => {
         expect(response.body.data.send_email_verification).toHaveProperty("role")
         expect(response.body.data.send_email_verification).toHaveProperty("is_email_verified")
 
-        expect(response.body.data.send_email_verification.name).toBe("test")
-        expect(response.body.data.send_email_verification.email).toBe("test2@gmail.com")
-        expect(response.body.data.send_email_verification.phone).toBe("081234567890")
+        expect(response.body.data.send_email_verification.name).toBe("jihad umar")
+        expect(response.body.data.send_email_verification.email).toBe("jihadumar1021@gmail.com")
+        expect(response.body.data.send_email_verification.phone).toBe("082352395596")
         expect(response.body.data.send_email_verification.address).toBe("Jl. Langsat")
         expect(response.body.data.send_email_verification.role).toBe("customer")
         expect(response.body.data.send_email_verification.is_email_verified).toBe(false)

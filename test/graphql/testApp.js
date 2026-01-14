@@ -11,7 +11,7 @@ app.use(express.json(), cors())
 connectDB()
 
 app.use("/graphql", (req, res) => {
-    return createHandler({ schema, context: () => req })(req, res)
+    return createHandler({ schema, context: () => ({ authorization: req.header("Authorization") }) })(req, res)
 })
 
 module.exports = app
