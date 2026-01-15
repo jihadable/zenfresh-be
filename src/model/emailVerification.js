@@ -9,7 +9,8 @@ const EmailVerificationSchema = new Schema(
         },
         token: {
             type: String,
-            required: true
+            required: true,
+            unique: true,
         },
         expires_at: {
             type: Date,

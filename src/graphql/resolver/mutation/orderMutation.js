@@ -6,6 +6,7 @@ const categoryService = require("../../../service/categoryService")
 const userService = require("../../../service/userService")
 const authMiddleware = require("../../../middleware/authMiddleware")
 const emailVerifiedMiddleware = require("../../../middleware/emailVerificationMiddleware")
+const { orderMapper, categoryMapper, userMapper } = require("../../../helper/mapper")
 
 const orderMutation = {
     post_order: {
@@ -22,11 +23,13 @@ const orderMutation = {
 
                 const unseenOrders = await orderService.getUnseenOrders()
                 await orderTrigger("unseen_orders", unseenOrders.length)
+
+                const categoryForPopulatedOrder = await categoryService.getCategoryById(order.category)
+                const user = await userService.getUserById(order.user)
                 const populatedOrder = {
-                    ...order.toObject(),
-                    id: order._id,
-                    category: await categoryService.getCategoryById(order.category),
-                    user: await userService.getUserById(order.user)
+                    ...orderMapper(order),
+                    category: categoryMapper(categoryForPopulatedOrder),
+                    user: userMapper(user)
                 }
                 await orderTrigger("order_created", populatedOrder)
     
@@ -48,12 +51,13 @@ const orderMutation = {
                 authMiddleware(authorization, "admin")
     
                 const order = await orderService.updateOrderById(id, { status, total_price })
+                const category = await categoryService.getCategoryById(order.category)
+                const user = await userService.getUserById(order.user)
 
                 const populatedOrder = {
-                    ...order.toObject(),
-                    id: order._id,
-                    category: await categoryService.getCategoryById(order.category),
-                    user: await userService.getUserById(order.user)
+                    ...orderMapper(order),
+                    category: categoryMapper(category),
+                    user: userMapper(user)
                 }
                 await orderTrigger("order_updated", populatedOrder)
     
