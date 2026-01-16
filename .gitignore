@@ -1,3 +1,4 @@
 node_modules/
 .env
 tes.js
+src/config/database/seed
