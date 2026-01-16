@@ -61,6 +61,24 @@ const userMutation = {
                 throw error
             }
         }
+    },
+    update_user_password: {
+        type: UserType,
+        args: {
+            password: { type: new GraphQLNonNull(GraphQLString) },
+            new_password: { type: new GraphQLNonNull(GraphQLString) }
+        },
+        resolve: async(_, { password, new_password }, { authorization }) => {
+            try {
+                const { id } = authMiddleware(authorization, "customer")
+
+                const user = await userService.updatePassword(id, { password, newPassword: new_password })
+
+                return user
+            } catch(error){
+                throw new error
+            }
+        }
     }
 }
 

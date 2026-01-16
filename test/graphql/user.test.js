@@ -221,4 +221,72 @@ describe("User API", () => {
         expect(response.body).toHaveProperty("errors")
         expect(Array.isArray(response.body.errors)).toBe(true)
     })
+
+    test("Update user password", async() => {
+        const response = await request(app).post("/grapqhl")
+            .set({
+                "Authorization": `Bearer ${jwt}`
+            })
+            .send({
+                query:
+                `mutation {
+                    update_user_password(password: "${process.env.PRIVATE_PASSWORD}", new_password: "${process.env.NEW_PRIVATE_PASSWORD}"){
+                        id, name, email, phone, address, role, is_email_verified
+                    }
+                }`
+            })
+
+        expect(response.body).not.toHaveProperty("errors")
+        expect(response.body).toHaveProperty("data")
+        
+        expect(response.body.data).toHaveProperty("update_user_password")
+
+        expect(response.body.data.update_user_password).toHaveProperty("id")
+        expect(response.body.data.update_user_password).toHaveProperty("name")
+        expect(response.body.data.update_user_password).toHaveProperty("email")
+        expect(response.body.data.update_user_password).toHaveProperty("phone")
+        expect(response.body.data.update_user_password).toHaveProperty("address")
+        expect(response.body.data.update_user_password).toHaveProperty("role")
+        expect(response.body.data.update_user_password).toHaveProperty("is_email_verified")
+
+        expect(response.body.data.login.user.name).toBe("update test")
+        expect(response.body.data.login.user.email).toBe("test@gmail.com")
+        expect(response.body.data.login.user.phone).toBe("081122334455")
+        expect(response.body.data.login.user.address).toBe("Jl. Durian")
+        expect(response.body.data.login.user.role).toBe("customer")
+        expect(response.body.data.login.user.is_email_verified).toBe(false)
+    })
+
+    test("Update user password with invalid payload", async() => {
+        const response = await request(app).post("/graphql")
+            .set({
+                "Authorization": `Bearer ${jwt}`
+            })
+            .send({
+                query:
+                `mutation {
+                    update_user_password(){
+                        id, name, email, phone, address, role, is_email_verified
+                    }
+                }`
+            })
+
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors)).toBe(true)
+    })
+
+    test("Update user password without jwt", async() => {
+        const response = await request(app).post("/graphql")
+            .send({
+                query:
+                `mutation {
+                    update_user_password(password: "${process.env.PRIVATE_PASSWORD}", new_password: "${process.env.NEW_PRIVATE_PASSWORD}"){
+                        id, name, email, phone, address, role, is_email_verified
+                    }
+                }`
+            })
+
+        expect(response.body).toHaveProperty("errors")
+        expect(Array.isArray(response.body.errors)).toBe(true)
+    })
 })

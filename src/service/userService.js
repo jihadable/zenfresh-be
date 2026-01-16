@@ -87,8 +87,25 @@ class UserService {
         return user
     }
 
-    async updatePassword(){
-        
+    async updatePassword(id, { password, newPassword }){
+        if (password == newPassword){
+            throw new Error("New password can not be same with old password")
+        }
+
+        const user = await this._model.findById(id)
+        if (!user){
+            throw new Error("User not found")
+        }
+
+        if (!compareSync(password, user.password)){
+            throw new Error("Password is incorrect")                
+        }
+
+        const hashedNewPassword = await hash(newPassword, 10)
+        user.password = hashedNewPassword
+        await user.save()
+
+        return user
     }
 }
 
