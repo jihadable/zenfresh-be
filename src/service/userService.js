@@ -86,6 +86,10 @@ class UserService {
 
         return user
     }
+
+    async updatePassword(){
+        
+    }
 }
 
 const userService = new UserService()
