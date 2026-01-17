@@ -76,7 +76,7 @@ const userMutation = {
 
                 return user
             } catch(error){
-                throw new error
+                throw error
             }
         }
     }

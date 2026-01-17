@@ -15,7 +15,7 @@ class CategoryService {
         const category = await this._model.findById(id)
 
         if (!category){
-            throw new Error("Kategori tidak ditemukan")
+            throw new Error("Category not found")
         }
 
         return category
@@ -31,7 +31,7 @@ class CategoryService {
         const order = await this._model.deleteOne({ _id: id })
 
         if (order.deletedCount == 0){
-            throw new Error("Kategori tidak ditemukan")
+            throw new Error("Category not found")
         }
     }
 }

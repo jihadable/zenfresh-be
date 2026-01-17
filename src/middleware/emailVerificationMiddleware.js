@@ -1,7 +1,7 @@
 const emailVerifiedMiddleware = isEmailVerified => {
     try {
         if (!isEmailVerified){
-            throw new Error("Email pengguna belum terverifikasi")
+            throw new Error("Email is not verified")
         }
     } catch(error){
         throw error

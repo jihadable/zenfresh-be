@@ -223,7 +223,7 @@ describe("User API", () => {
     })
 
     test("Update user password", async() => {
-        const response = await request(app).post("/grapqhl")
+        const response = await request(app).post("/graphql")
             .set({
                 "Authorization": `Bearer ${jwt}`
             })
@@ -249,12 +249,12 @@ describe("User API", () => {
         expect(response.body.data.update_user_password).toHaveProperty("role")
         expect(response.body.data.update_user_password).toHaveProperty("is_email_verified")
 
-        expect(response.body.data.login.user.name).toBe("update test")
-        expect(response.body.data.login.user.email).toBe("test@gmail.com")
-        expect(response.body.data.login.user.phone).toBe("081122334455")
-        expect(response.body.data.login.user.address).toBe("Jl. Durian")
-        expect(response.body.data.login.user.role).toBe("customer")
-        expect(response.body.data.login.user.is_email_verified).toBe(false)
+        expect(response.body.data.update_user_password.name).toBe("update test")
+        expect(response.body.data.update_user_password.email).toBe("test@gmail.com")
+        expect(response.body.data.update_user_password.phone).toBe("081122334455")
+        expect(response.body.data.update_user_password.address).toBe("Jl. Durian")
+        expect(response.body.data.update_user_password.role).toBe("customer")
+        expect(response.body.data.update_user_password.is_email_verified).toBe(false)
     })
 
     test("Update user password with invalid payload", async() => {

@@ -57,7 +57,7 @@ class UserService {
         const user = await this._model.findById(id)
 
         if (!user){
-            throw new Error("Pengguna tidak ditemukan")
+            throw new Error("User not found")
         }
 
         return user
@@ -67,11 +67,11 @@ class UserService {
         const user = await this._model.findOne({ email })
 
         if (!user){
-            throw new Error("Pengguna tidak ditemukan")
+            throw new Error("User not found")
         }
 
         if (!compareSync(password, user.password)){
-            throw new Error("Email atau password salah")
+            throw new Error("Incorrect email or password")
         }
 
         return user
@@ -81,7 +81,7 @@ class UserService {
         const user = await this._model.findByIdAndUpdate(id, { name, phone, address }, { new: true })
 
         if (!user){
-            throw new Error("Pengguna tidak ditemukan")
+            throw new Error("User not found")
         }
 
         return user
@@ -98,7 +98,7 @@ class UserService {
         }
 
         if (!compareSync(password, user.password)){
-            throw new Error("Password is incorrect")                
+            throw new Error("Incorrect password")
         }
 
         const hashedNewPassword = await hash(newPassword, 10)

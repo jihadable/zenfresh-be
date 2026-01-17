@@ -15,7 +15,7 @@ class OrderService {
         const order = await this._model.findById(id)
 
         if (!order){
-            throw new Error("Pemesanan tidak ditemukan")
+            throw new Error("Order not found")
         }
 
         return order
@@ -37,7 +37,7 @@ class OrderService {
         const order = await this._model.findByIdAndUpdate(id, { status, total_price }, { new: true })
 
         if (!order){
-            throw new Error("Pemesanan tidak ditemukan")
+            throw new Error("Order not found")
         }
 
         return order
@@ -47,7 +47,7 @@ class OrderService {
         const order = await this._model.deleteOne({ _id: id })
 
         if (order.deletedCount == 0){
-            throw new Error("Pemesanan tidak ditemukan")
+            throw new Error("Order not found")
         }
     }
 

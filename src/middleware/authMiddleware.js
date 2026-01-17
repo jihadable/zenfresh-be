@@ -3,18 +3,18 @@ const { verify } = require("jsonwebtoken")
 const authMiddleware = (authorization, ...allowedRoles) => {
     try {
         if (!authorization){
-            throw new Error("Token tidak ditemukan")
+            throw new Error("JWT not found")
         }
         
         const token = authorization.split(" ")[1]
         if (!token){
-            throw new Error("Token tidak ditemukan")
+            throw new Error("JWT not found")
         }
         
         const payload = verify(token, process.env.JWT_SECRET)
 
         if (allowedRoles.length != 0 && !allowedRoles.includes(payload.role)){
-            throw new Error("Pengguna tidak diizinkan")
+            throw new Error("User is forbidden")
         }
 
         return payload

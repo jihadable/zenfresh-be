@@ -20,18 +20,18 @@ class EmailVerificationService {
             const emailVerification = await this._model.findOne({ token }, null, { session })
 
             if (!emailVerification){
-                throw new Error("Token tidak valid")
+                throw new Error("Invalid token")
             }
 
             if (emailVerification.expires_at < new Date()){
                 await this._model.deleteOne({ _id: emailVerification._id }, { session })
-                throw new Error("Token sudah kadaluarsa")
+                throw new Error("Token is expired")
             }
 
             user = await this._userModel.findByIdAndUpdate({ _id: emailVerification.user }, { is_email_verified: true }, { new: true, session })
 
             if (user.modifiedCount == 0){
-                throw new Error("Pengguna tidak ditemukan")
+                throw new Error("User not found")
             }
 
             await this._model.deleteOne({ _id: emailVerification._id }, { session })
