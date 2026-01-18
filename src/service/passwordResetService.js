@@ -54,18 +54,18 @@ class PasswordResetService {
         let user, token
 
         try {
-            user = await this._userModel.findOne({ email }, null, { session })
+            user = await this._userModel.findOne({ email, role: "customer" }, null, { session })
             if (!user){
                 throw new Error("Invalid token")
             }
 
             token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
-            await this._model.create({
+            await this._model.create([{
                 user: user._id,
                 token,
                 expires_at: expireTime
-            }, { session })
+            }], { session })
 
             await session.commitTransaction()
         } catch(error){

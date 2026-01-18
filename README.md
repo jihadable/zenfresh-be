@@ -11,8 +11,14 @@ ZenFresh is a laundry business. The website showcases a landing page, the range 
 <br/>
 » ExpressJS
 <br/>
+» Jest
+<br/>
+» NodeMailer
+<br/>
 » MongoDB
 <br/>
 » GraphQL
+<br/>
+» Pusher
 
 <img src="https://umarjihad.netlify.app/pic/zenfresh.png" />
