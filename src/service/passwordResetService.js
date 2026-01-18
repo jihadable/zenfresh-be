@@ -1,41 +1,41 @@
 const { startSession } = require("mongoose");
-const EmailVerification = require("../model/emailVerification");
+const PasswordReset = require("../model/passwordReset");
 const User = require("../model/user");
-const { sendEmailVerification } = require("../helper/mailer");
 const { getToken } = require("../helper/tokenizer");
+const { sendPasswordResetEmail } = require("../helper/mailer");
+const { hash } = require("bcrypt");
 
-class EmailVerificationService {
+class PasswordResetService {
     constructor(){
-        this._model = EmailVerification
+        this._model = PasswordReset
         this._userModel = User
     }
 
-    async verifyEmail(token){
+    async resetPassword(token, newPassword){
         const session = await startSession()
         session.startTransaction()
 
         let user
 
         try {
-            const emailVerification = await this._model.findOne({ token }, null, { session })
-
-            if (!emailVerification){
+            const passwordReset = await this._model.findOne({ token }, null, { session })
+            if (!passwordReset){
                 throw new Error("Invalid token")
             }
-
-            if (emailVerification.expires_at < new Date()){
-                await this._model.deleteOne({ _id: emailVerification._id })
+            if (passwordReset.expires_at < new Date()){
+                await this._model.deleteOne({ _id: passwordReset._id })
                 throw new Error("Token is expired")
             }
 
-            user = await this._userModel.findByIdAndUpdate(emailVerification.user, { is_email_verified: true }, { new: true, session })
+            const hashedNewPassword = await hash(newPassword, 10)
+            user = await this._userModel.findByIdAndUpdate(passwordReset.user, { password: hashedNewPassword }, { session })
 
             if (user.modifiedCount == 0){
                 throw new Error("User not found")
             }
 
-            await this._model.deleteOne({ _id: emailVerification._id }, { session })
-
+            await this._model.deleteOne({ _id: passwordReset._id }, { session })
+            
             await session.commitTransaction()
         } catch(error){
             await session.abortTransaction()
@@ -47,22 +47,25 @@ class EmailVerificationService {
         return user
     }
 
-    async sendEmailVerification(userId){
+    async sendPasswordResetEmail(email){
         const session = await startSession()
         session.startTransaction()
 
         let user, token
 
         try {
-            user = await this._userModel.findOne({ _id: userId }, null, { session })
+            user = await this._userModel.findOne({ email }, null, { session })
+            if (!user){
+                throw new Error("Invalid token")
+            }
 
             token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
-            await this._model.create([{
+            await this._model.create({
                 user: user._id,
                 token,
                 expires_at: expireTime
-            }], { session })
+            }, { session })
 
             await session.commitTransaction()
         } catch(error){
@@ -71,14 +74,14 @@ class EmailVerificationService {
         } finally {
             await session.endSession()
         }
-        
-        const emailVerificationLink = `${process.env.WEB_ENDPOINT}/verify-email/${token}`
-        await sendEmailVerification(user.email, emailVerificationLink)
+
+        const passwordResetLink = `${process.env.WEB_ENDPOINT}/reset-password/${token}`
+        await sendPasswordResetEmail(user.email, passwordResetLink)
 
         return user
     }
 }
 
-const emailVerificationService = new EmailVerificationService()
+const passwordResetService = new PasswordResetService()
 
-module.exports = emailVerificationService
+module.exports = passwordResetService

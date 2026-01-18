@@ -22,4 +22,16 @@ const sendEmailVerification = async(target, emailVerificationLink) => {
     })
 }
 
-module.exports = { sendEmailVerification }
+const sendPasswordResetEmail = async(target, passwordResetLink) => {
+    const htmlPath = path.join(__dirname, "../view/passwordReset.html")
+    let html = fs.readFileSync(htmlPath, "utf-8");
+    html = html.replace("{{passwordResetLink}}", passwordResetLink)
+    
+    await transporter.sendMail({
+        to: target,
+        subject: "[ZenFresh] Password Reset",
+        html
+    })
+}
+
+module.exports = { sendEmailVerification, sendPasswordResetEmail }
