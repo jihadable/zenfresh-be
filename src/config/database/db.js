@@ -1,6 +1,3 @@
-require("dotenv").config({
-    path: ".env.local"
-})
 const mongoose = require("mongoose")
 
 const connectDB = async () => {
@@ -8,8 +5,6 @@ const connectDB = async () => {
         let mongoURI = process.env.MONGO_URI
 
         await mongoose.connect(mongoURI)
-
-        console.log("hai")
     } catch (error){
         console.error(error)
         process.exit(1)

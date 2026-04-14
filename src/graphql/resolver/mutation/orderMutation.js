@@ -35,7 +35,7 @@ const orderMutation = {
                 await orderTrigger("order_created", populatedOrder)
 
                 const redisKey = `order:${order._id}`
-                await redis.set(redisKey, populatedOrder)
+                await redis.setEx(redisKey, 60 * 60, JSON.stringify(order))
     
                 return order
             } catch(error){
@@ -85,7 +85,7 @@ const orderMutation = {
     
                 await orderService.deleteOrderById(id)
 
-                const redisKey = `order:${order._id}`
+                const redisKey = `order:${id}`
                 await redis.del(redisKey)
     
                 return true
@@ -102,9 +102,6 @@ const orderMutation = {
 
                 await orderService.markAllSeen()
                 await orderTrigger("unseen_orders", 0)
-
-                const redisKey = `order:${order._id}`
-                await redis.del(redisKey)
 
                 return true
             } catch(error){

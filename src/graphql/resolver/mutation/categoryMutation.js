@@ -19,7 +19,7 @@ const categoryMutation = {
                 const category = await categoryService.addCategory({ name, price, description })
 
                 const redisKey = `category:${category._id}`
-                await redis.set(redisKey, category)
+                await redis.setEx(redisKey, 60 * 60, JSON.stringify(category))
     
                 return category
             } catch(error){

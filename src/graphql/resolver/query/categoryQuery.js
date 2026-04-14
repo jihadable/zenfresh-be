@@ -15,10 +15,12 @@ const categoryQuery = {
                 const categoryInRedis = await redis.get(redisKey)
 
                 if (categoryInRedis){
-                    return categoryInRedis
+                    return JSON.parse(categoryInRedis)
                 }
 
                 const category = await categoryService.getCategoryById(id)
+
+                await redis.setEx(redisKey, 60 * 60, JSON.stringify(category))
     
                 return category
             } catch(error){
@@ -30,7 +32,16 @@ const categoryQuery = {
         type: new GraphQLList(CategoryType),
         resolve: async() => {
             try {
+                const redisKey = `categories`
+                const categoriesInRedis = await redis.get(redisKey)
+
+                if (categoriesInRedis){
+                    return JSON.parse(categoriesInRedis)
+                }
+
                 const categories = await categoryService.getCategories()
+
+                await redis.setEx(redisKey, 60 * 60, JSON.stringify(categories))
     
                 return categories
             } catch(error){

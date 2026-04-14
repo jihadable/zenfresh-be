@@ -18,10 +18,12 @@ const orderQuery = {
                 const orderInRedis = await redis.get(redisKey)
 
                 if (orderInRedis){
-                    return orderInRedis
+                    return JSON.parse(orderInRedis)
                 }
 
                 const order = await orderService.getOrderById(id)
+
+                await redis.setEx(redisKey, 60 * 60, JSON.stringify(order))
     
                 return order
             } catch(error){
