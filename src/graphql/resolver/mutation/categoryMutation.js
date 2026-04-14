@@ -2,6 +2,7 @@ const { GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLID, GraphQLNonNull } =
 const CategoryType = require("../../type/categoryType");
 const categoryService = require("../../../service/categoryService");
 const authMiddleware = require("../../../middleware/authMiddleware");
+const redis = require("../../../config/redis");
 
 const categoryMutation = {
     post_category: {
@@ -16,6 +17,9 @@ const categoryMutation = {
                 authMiddleware(authorization, "admin")
 
                 const category = await categoryService.addCategory({ name, price, description })
+
+                const redisKey = `category:${category._id}`
+                await redis.set(redisKey, category)
     
                 return category
             } catch(error){
@@ -33,6 +37,9 @@ const categoryMutation = {
                 authMiddleware(authorization, "admin")
                 
                 await categoryService.deleteCategoryById(id)
+
+                const redisKey = `category:${category._id}`
+                await redis.del(redisKey)
     
                 return true
             } catch(error){

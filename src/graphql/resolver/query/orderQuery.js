@@ -2,6 +2,7 @@ const { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLInt } = require("graphql"
 const orderService = require("../../../service/orderService")
 const OrderType = require("../../type/orderType")
 const authMiddleware = require("../../../middleware/authMiddleware")
+const redis = require("../../../config/redis")
 
 const orderQuery = {
     order: {
@@ -12,6 +13,13 @@ const orderQuery = {
         resolve: async(_, { id }, { authorization }) => {
             try {
                 authMiddleware(authorization)
+
+                const redisKey = `order:${id}`
+                const orderInRedis = await redis.get(redisKey)
+
+                if (orderInRedis){
+                    return orderInRedis
+                }
 
                 const order = await orderService.getOrderById(id)
     

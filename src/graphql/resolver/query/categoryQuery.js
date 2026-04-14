@@ -1,6 +1,7 @@
 const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
 const CategoryType = require("../../type/categoryType");
 const categoryService = require("../../../service/categoryService");
+const redis = require("../../../config/redis");
 
 const categoryQuery = {
     category: {
@@ -10,6 +11,13 @@ const categoryQuery = {
         },
         resolve: async(_, { id }) => {
             try {
+                const redisKey = `category:${id}`
+                const categoryInRedis = await redis.get(redisKey)
+
+                if (categoryInRedis){
+                    return categoryInRedis
+                }
+
                 const category = await categoryService.getCategoryById(id)
     
                 return category

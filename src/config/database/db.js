@@ -1,19 +1,17 @@
-require("dotenv").config()
+require("dotenv").config({
+    path: ".env.local"
+})
 const mongoose = require("mongoose")
 
 const connectDB = async () => {
     try {
-        const phase = process.env.APP_PHASE || "test"
-        let mongoURI
-        if (phase == "test"){
-            mongoURI = process.env.MONGO_URI_TEST
-        } else if (phase == "dev"){
-            mongoURI = process.env.MONGO_URI_DEV
-        }
+        let mongoURI = process.env.MONGO_URI
 
         await mongoose.connect(mongoURI)
-    } catch (error) {
-        console.error(error.message)
+
+        console.log("hai")
+    } catch (error){
+        console.error(error)
         process.exit(1)
     }
 }

@@ -7,6 +7,7 @@ const userService = require("../../../service/userService")
 const authMiddleware = require("../../../middleware/authMiddleware")
 const emailVerifiedMiddleware = require("../../../middleware/emailVerificationMiddleware")
 const { orderMapper, categoryMapper, userMapper } = require("../../../helper/mapper")
+const redis = require("../../../config/redis")
 
 const orderMutation = {
     post_order: {
@@ -32,6 +33,9 @@ const orderMutation = {
                     user: userMapper(user)
                 }
                 await orderTrigger("order_created", populatedOrder)
+
+                const redisKey = `order:${order._id}`
+                await redis.set(redisKey, populatedOrder)
     
                 return order
             } catch(error){
@@ -60,6 +64,9 @@ const orderMutation = {
                     user: userMapper(user)
                 }
                 await orderTrigger("order_updated", populatedOrder)
+
+                const redisKey = `order:${order._id}`
+                await redis.del(redisKey)
     
                 return order
             } catch(error){
@@ -77,6 +84,9 @@ const orderMutation = {
                 authMiddleware(authorization, "admin")
     
                 await orderService.deleteOrderById(id)
+
+                const redisKey = `order:${order._id}`
+                await redis.del(redisKey)
     
                 return true
             } catch(error){
@@ -92,6 +102,9 @@ const orderMutation = {
 
                 await orderService.markAllSeen()
                 await orderTrigger("unseen_orders", 0)
+
+                const redisKey = `order:${order._id}`
+                await redis.del(redisKey)
 
                 return true
             } catch(error){
