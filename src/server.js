@@ -2,7 +2,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import { createHandler } from "graphql-http/lib/use/express";
-import path from "path";
 import connectDB from "./config/database/db.js";
 import schema from "./graphql/index.js";
 import authMiddleware from "./middleware/authMiddleware.js";
@@ -16,7 +15,7 @@ app.use(express.json(), cors())
 
 connectDB()
 
-app.use("/asset", express.static(path.join(__dirname, "asset")))
+app.use("/asset", express.static(new URL("./asset", import.meta.url).pathname))
 
 app.post("/pusher/auth", async(req, res) => {
     try {
