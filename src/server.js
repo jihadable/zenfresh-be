@@ -8,7 +8,7 @@ import schema from "./graphql/index.js";
 import authMiddleware from "./middleware/authMiddleware.js";
 
 dotenv.config({
-    path: ".env.local"
+    path: ".env"
 })
 
 const app = express()
