@@ -1,5 +1,5 @@
 require("dotenv").config({
-    path: ".env.local"
+    path: ".env"
 });
 const express = require("express");
 const { createHandler } = require("graphql-http/lib/use/express");
