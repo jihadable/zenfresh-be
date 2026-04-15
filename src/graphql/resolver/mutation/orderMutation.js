@@ -1,13 +1,13 @@
-const { GraphQLID, GraphQLString, GraphQLBoolean, GraphQLNonNull, GraphQLInt } = require("graphql")
-const OrderType = require("../../type/orderType")
-const { orderTrigger } = require("../../../config/pusher")
-const orderService = require("../../../service/orderService")
-const categoryService = require("../../../service/categoryService")
-const userService = require("../../../service/userService")
-const authMiddleware = require("../../../middleware/authMiddleware")
-const emailVerifiedMiddleware = require("../../../middleware/emailVerificationMiddleware")
-const { orderMapper, categoryMapper, userMapper } = require("../../../helper/mapper")
-const redis = require("../../../config/redis")
+import { GraphQLBoolean, GraphQLID, GraphQLInt, GraphQLNonNull, GraphQLString } from "graphql"
+import { orderTrigger } from "../../../config/pusher.js"
+import redis from "../../../config/redis.js"
+import { categoryMapper, orderMapper, userMapper } from "../../../helper/mapper.js"
+import authMiddleware from "../../../middleware/authMiddleware.js"
+import emailVerifiedMiddleware from "../../../middleware/emailVerificationMiddleware.js"
+import categoryService from "../../../service/categoryService.js"
+import orderService from "../../../service/orderService.js"
+import userService from "../../../service/userService.js"
+import OrderType from "../../type/orderType.js"
 
 const orderMutation = {
     post_order: {
@@ -111,4 +111,4 @@ const orderMutation = {
     }
 }
 
-module.exports = orderMutation
+export default orderMutation

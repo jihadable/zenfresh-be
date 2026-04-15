@@ -1,9 +1,9 @@
-const { GraphQLObjectType } = require("graphql");
-const userMutation = require("./userMutation");
-const categoryMutation = require("./categoryMutation");
-const orderMutation = require("./orderMutation");
-const emailVerificationMutation = require("./emailVerificationMutation");
-const passwordResetMutation = require("./passwordResetMutation");
+import { GraphQLObjectType } from "graphql"
+import categoryMutation from "./categoryMutation.js"
+import emailVerificationMutation from "./emailVerificationMutation.js"
+import orderMutation from "./orderMutation.js"
+import passwordResetMutation from "./passwordResetMutation.js"
+import userMutation from "./userMutation.js"
 
 const Mutation = new GraphQLObjectType({
     name: "Mutation",
@@ -16,4 +16,4 @@ const Mutation = new GraphQLObjectType({
     }
 })
 
-module.exports = Mutation
+export default Mutation

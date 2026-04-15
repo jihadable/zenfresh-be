@@ -1,5 +1,5 @@
-const { GraphQLObjectType, GraphQLString, GraphQLNonNull } = require("graphql");
-const UserType = require("./userType");
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
+import UserType from "./userType.js"
 
 const AuthPayloadType = new GraphQLObjectType({
     name: "AuthPayloadType",
@@ -9,4 +9,4 @@ const AuthPayloadType = new GraphQLObjectType({
     })
 })
 
-module.exports = AuthPayloadType
+export default AuthPayloadType

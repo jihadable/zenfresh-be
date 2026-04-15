@@ -1,7 +1,7 @@
-const { GraphQLObjectType } = require("graphql");
-const userQuery = require("./userQuery");
-const categoryQuery = require("./categoryQuery");
-const orderQuery = require("./orderQuery");
+import { GraphQLObjectType } from "graphql"
+import categoryQuery from "./categoryQuery.js"
+import orderQuery from "./orderQuery.js"
+import userQuery from "./userQuery.js"
 
 const Query = new GraphQLObjectType({
     name: "Query",
@@ -12,4 +12,4 @@ const Query = new GraphQLObjectType({
     }
 })
 
-module.exports = Query
+export default Query

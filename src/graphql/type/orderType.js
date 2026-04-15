@@ -1,8 +1,8 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLID, GraphQLNonNull } = require("graphql");
-const CategoryType = require("./categoryType");
-const UserType = require("./userType");
-const categoryService = require("../../service/categoryService");
-const userService = require("../../service/userService");
+import { GraphQLID, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from "graphql"
+import categoryService from "../../service/categoryService.js"
+import userService from "../../service/userService.js"
+import CategoryType from "./categoryType.js"
+import UserType from "./userType.js"
 
 const OrderType = new GraphQLObjectType({
     name: "OrderType",
@@ -30,4 +30,4 @@ const OrderType = new GraphQLObjectType({
     })
 })
 
-module.exports = OrderType
+export default OrderType

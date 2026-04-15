@@ -1,6 +1,6 @@
-const { GraphQLNonNull, GraphQLString } = require("graphql")
-const UserType = require("../../type/userType")
-const passwordResetService = require("../../../service/passwordResetService")
+import { GraphQLNonNull, GraphQLString } from "graphql"
+import passwordResetService from "../../../service/passwordResetService.js"
+import UserType from "../../type/userType.js"
 
 const passwordResetMutation = {
     reset_password: {

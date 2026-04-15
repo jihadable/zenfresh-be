@@ -1,8 +1,8 @@
-const { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLInt } = require("graphql")
-const orderService = require("../../../service/orderService")
-const OrderType = require("../../type/orderType")
-const authMiddleware = require("../../../middleware/authMiddleware")
-const redis = require("../../../config/redis")
+import { GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } from "graphql"
+import redis from "../../../config/redis.js"
+import authMiddleware from "../../../middleware/authMiddleware.js"
+import orderService from "../../../service/orderService.js"
+import OrderType from "../../type/orderType.js"
 
 const orderQuery = {
     order: {
@@ -71,4 +71,4 @@ const orderQuery = {
     }
 }
 
-module.exports = orderQuery
+export default orderQuery

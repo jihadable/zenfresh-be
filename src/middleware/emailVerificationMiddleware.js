@@ -8,4 +8,4 @@ const emailVerifiedMiddleware = isEmailVerified => {
     }
 }
 
-module.exports = emailVerifiedMiddleware
+export default emailVerifiedMiddleware

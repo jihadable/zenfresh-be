@@ -1,7 +1,7 @@
-const { GraphQLID, GraphQLList, GraphQLNonNull } = require("graphql");
-const CategoryType = require("../../type/categoryType");
-const categoryService = require("../../../service/categoryService");
-const redis = require("../../../config/redis");
+import { GraphQLID, GraphQLList, GraphQLNonNull } from "graphql"
+import redis from "../../../config/redis.js"
+import categoryService from "../../../service/categoryService.js"
+import CategoryType from "../../type/categoryType.js"
 
 const categoryQuery = {
     category: {
@@ -51,4 +51,4 @@ const categoryQuery = {
     }
 }
 
-module.exports = categoryQuery
+export default categoryQuery

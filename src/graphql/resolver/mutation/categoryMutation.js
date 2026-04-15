@@ -1,8 +1,8 @@
-const { GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLID, GraphQLNonNull } = require("graphql");
-const CategoryType = require("../../type/categoryType");
-const categoryService = require("../../../service/categoryService");
-const authMiddleware = require("../../../middleware/authMiddleware");
-const redis = require("../../../config/redis");
+import { GraphQLBoolean, GraphQLID, GraphQLInt, GraphQLNonNull, GraphQLString } from "graphql"
+import redis from "../../../config/redis.js"
+import authMiddleware from "../../../middleware/authMiddleware.js"
+import categoryService from "../../../service/categoryService.js"
+import CategoryType from "../../type/categoryType.js"
 
 const categoryMutation = {
     post_category: {
@@ -49,4 +49,4 @@ const categoryMutation = {
     }
 }
 
-module.exports = categoryMutation
+export default categoryMutation

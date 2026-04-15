@@ -1,4 +1,4 @@
-const Pusher = require("pusher");
+import Pusher from "pusher"
 
 const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID,
@@ -15,4 +15,4 @@ const emailVerificationTrigger = async(event, data) => {
     await pusher.trigger("email_verification_channel", event, data)
 }
 
-module.exports = { orderTrigger, emailVerificationTrigger }
+export { emailVerificationTrigger, orderTrigger }

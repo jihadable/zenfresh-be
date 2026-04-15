@@ -1,6 +1,6 @@
-const fs = require("fs")
-const path = require("path")
-const nodemailer = require("nodemailer");
+import fs from "fs"
+import nodemailer from "nodemailer"
+import path from "path"
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -34,4 +34,4 @@ const sendPasswordResetEmail = async(target, passwordResetLink) => {
     })
 }
 
-module.exports = { sendEmailVerification, sendPasswordResetEmail }
+export { sendEmailVerification, sendPasswordResetEmail }

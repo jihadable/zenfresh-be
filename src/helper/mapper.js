@@ -32,4 +32,4 @@ const categoryMapper = category => {
     }
 }
 
-module.exports = { userMapper, orderMapper, categoryMapper }
+export { categoryMapper, orderMapper, userMapper }

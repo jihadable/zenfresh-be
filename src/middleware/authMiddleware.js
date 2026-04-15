@@ -1,4 +1,4 @@
-const { verify } = require("jsonwebtoken")
+import { verify } from "jsonwebtoken"
 
 const authMiddleware = (authorization, ...allowedRoles) => {
     try {
@@ -23,4 +23,4 @@ const authMiddleware = (authorization, ...allowedRoles) => {
     }
 }
 
-module.exports = authMiddleware
+export default authMiddleware

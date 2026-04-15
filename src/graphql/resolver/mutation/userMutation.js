@@ -1,9 +1,9 @@
-const { GraphQLString, GraphQLNonNull } = require("graphql");
-const AuthPayloadType = require("../../type/authPayloadType");
-const UserType = require("../../type/userType");
-const userService = require("../../../service/userService");
-const authMiddleware = require("../../../middleware/authMiddleware");
-const { getJWT } = require("../../../helper/tokenizer");
+import { GraphQLNonNull, GraphQLString } from "graphql"
+import { getJWT } from "../../../helper/tokenizer.js"
+import authMiddleware from "../../../middleware/authMiddleware.js"
+import userService from "../../../service/userService.js"
+import AuthPayloadType from "../../type/authPayloadType.js"
+import UserType from "../../type/userType.js"
 
 const userMutation = {
     register: {
@@ -82,4 +82,4 @@ const userMutation = {
     }
 }
 
-module.exports = userMutation
+export default userMutation

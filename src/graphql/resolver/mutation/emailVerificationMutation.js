@@ -1,7 +1,7 @@
-const { GraphQLNonNull, GraphQLString } = require("graphql")
-const UserType = require("../../type/userType")
-const emailVerificationService = require("../../../service/emailVerificationService")
-const authMiddleware = require("../../../middleware/authMiddleware")
+import { GraphQLNonNull, GraphQLString } from "graphql"
+import authMiddleware from "../../../middleware/authMiddleware.js"
+import emailVerificationService from "../../../service/emailVerificationService.js"
+import UserType from "../../type/userType.js"
 
 const emailVerificationMutation = {
     verify_email: {
@@ -35,4 +35,4 @@ const emailVerificationMutation = {
     }
 }
 
-module.exports = emailVerificationMutation
+export default emailVerificationMutation

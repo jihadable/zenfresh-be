@@ -1,6 +1,6 @@
-const authMiddleware = require("../../../middleware/authMiddleware");
-const userService = require("../../../service/userService");
-const UserType = require("../../type/userType");
+import authMiddleware from "../../../middleware/authMiddleware.js"
+import userService from "../../../service/userService.js"
+import UserType from "../../type/userType.js"
 
 const userQuery = {
     user: {
@@ -19,4 +19,4 @@ const userQuery = {
     }
 }
 
-module.exports = userQuery
+export default userQuery
