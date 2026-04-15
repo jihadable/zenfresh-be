@@ -1,6 +1,6 @@
-const request = require("supertest")
-const app = require("./testApp")
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
+import request from "supertest"
+import app from "./testApp.js"
 
 describe("Password Reset API", () => {
     const passwordResetToken = process.env.PASSWORD_RESET_TOKEN

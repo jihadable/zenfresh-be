@@ -38,7 +38,7 @@ const categoryMutation = {
                 
                 await categoryService.deleteCategoryById(id)
 
-                const redisKey = `category:${category._id}`
+                const redisKey = `category:${id}`
                 await redis.del(redisKey)
     
                 return true

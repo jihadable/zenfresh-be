@@ -1,4 +1,4 @@
-const { Schema, Types, model } = require("mongoose");
+import { Schema, Types, model } from "mongoose"
 
 const PasswordResetSchema = new Schema(
     {
@@ -25,4 +25,4 @@ const PasswordResetSchema = new Schema(
 
 const PasswordReset = model("PasswordReset", PasswordResetSchema)
 
-module.exports = PasswordReset
+export default PasswordReset

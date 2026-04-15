@@ -1,6 +1,6 @@
-const request = require("supertest")
-const app = require("./testApp")
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
+import request from "supertest"
+import app from "./testApp.js"
 
 describe("Order API", () => {
     let customer_jwt, admin_jwt, category_id, order_id
@@ -14,7 +14,7 @@ describe("Order API", () => {
             query:
             `mutation {
                 login(
-                    email: "umarjihad@gmail.com"
+                    email: "umarjihad141004@gmail.com"
                     password: "${process.env.PRIVATE_PASSWORD}"
                 ){
                     jwt,
@@ -40,8 +40,8 @@ describe("Order API", () => {
         expect(response.body.data.login.user).toHaveProperty("role")
         expect(response.body.data.login.user).toHaveProperty("is_email_verified")
 
-        expect(response.body.data.login.user.name).toBe("umar jihad")
-        expect(response.body.data.login.user.email).toBe("umarjihad@gmail.com")
+        expect(response.body.data.login.user.name).toBe("Umar Jihad")
+        expect(response.body.data.login.user.email).toBe("umarjihad141004@gmail.com")
         expect(response.body.data.login.user.phone).toBe("082352395596")
         expect(response.body.data.login.user.address).toBe("Jl. Langsat")
         expect(response.body.data.login.user.role).toBe("customer")
@@ -53,7 +53,7 @@ describe("Order API", () => {
             query:
             `mutation {
                 login(
-                    email: "zenfreshadmin@gmail.com",
+                    email: "noreplydevnoreplydev@gmail.com",
                     password: "${process.env.PRIVATE_PASSWORD}"
                 ){
                     jwt,
@@ -76,8 +76,8 @@ describe("Order API", () => {
         expect(response.body.data.login.user).toHaveProperty("email")
         expect(response.body.data.login.user).toHaveProperty("role")
 
-        expect(response.body.data.login.user.name).toBe("zenfresh admin")
-        expect(response.body.data.login.user.email).toBe("zenfreshadmin@gmail.com")
+        expect(response.body.data.login.user.name).toBe("Zenfresh Admin")
+        expect(response.body.data.login.user.email).toBe("noreplydevnoreplydev@gmail.com")
         expect(response.body.data.login.user.role).toBe("admin")
     })
 
@@ -327,7 +327,6 @@ describe("Order API", () => {
                 }`
             })
 
-        console.log(response.body.data.orders)
         expect(response.body).not.toHaveProperty("errors")
         expect(response.body).toHaveProperty("data")
 

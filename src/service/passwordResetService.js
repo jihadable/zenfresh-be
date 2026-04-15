@@ -1,9 +1,9 @@
-const { startSession } = require("mongoose");
-const PasswordReset = require("../model/passwordReset");
-const User = require("../model/user");
-const { getToken } = require("../helper/tokenizer");
-const { sendPasswordResetEmail } = require("../helper/mailer");
-const { hash } = require("bcrypt");
+import { hash } from "bcrypt"
+import { startSession } from "mongoose"
+import { sendPasswordResetEmail } from "../helper/mailer.js"
+import { getToken } from "../helper/tokenizer.js"
+import PasswordReset from "../model/passwordReset.js"
+import User from "../model/user.js"
 
 class PasswordResetService {
     constructor(){
@@ -84,4 +84,4 @@ class PasswordResetService {
 
 const passwordResetService = new PasswordResetService()
 
-module.exports = passwordResetService
+export default passwordResetService

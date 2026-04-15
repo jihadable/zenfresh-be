@@ -1,4 +1,4 @@
-const Category = require("../model/category");
+import Category from "../model/category.js"
 
 class CategoryService {
     constructor(){
@@ -38,4 +38,4 @@ class CategoryService {
 
 const categoryService = new CategoryService()
 
-module.exports = categoryService
+export default categoryService

@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
 const authMiddleware = (authorization, ...allowedRoles) => {
     try {
@@ -11,7 +11,7 @@ const authMiddleware = (authorization, ...allowedRoles) => {
             throw new Error("JWT not found")
         }
         
-        const payload = verify(token, process.env.JWT_SECRET)
+        const payload = jwt.verify(token, process.env.JWT_SECRET)
 
         if (allowedRoles.length != 0 && !allowedRoles.includes(payload.role)){
             throw new Error("User is forbidden")

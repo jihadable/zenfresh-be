@@ -1,8 +1,8 @@
-const { startSession } = require("mongoose");
-const EmailVerification = require("../model/emailVerification");
-const User = require("../model/user");
-const { sendEmailVerification } = require("../helper/mailer");
-const { getToken } = require("../helper/tokenizer");
+import { startSession } from "mongoose"
+import { sendEmailVerification } from "../helper/mailer.js"
+import { getToken } from "../helper/tokenizer.js"
+import EmailVerification from "../model/emailVerification.js"
+import User from "../model/user.js"
 
 class EmailVerificationService {
     constructor(){
@@ -81,4 +81,4 @@ class EmailVerificationService {
 
 const emailVerificationService = new EmailVerificationService()
 
-module.exports = emailVerificationService
+export default emailVerificationService

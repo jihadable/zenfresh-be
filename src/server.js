@@ -1,13 +1,15 @@
-require("dotenv").config({
-    path: ".env"
-});
-const express = require("express");
-const { createHandler } = require("graphql-http/lib/use/express");
-const schema = require("./graphql");
-const cors = require("cors");
-const path = require("path");
-const authMiddleware = require("./middleware/authMiddleware");
-const connectDB = require("./config/database/db");
+import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import { createHandler } from "graphql-http/lib/use/express";
+import path from "path";
+import connectDB from "./config/database/db.js";
+import schema from "./graphql/index.js";
+import authMiddleware from "./middleware/authMiddleware.js";
+
+dotenv.config({
+    path: ".env.local"
+})
 
 const app = express()
 app.use(express.json(), cors())

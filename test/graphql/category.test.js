@@ -1,6 +1,6 @@
-const request = require("supertest")
-const app = require("./testApp")
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
+import request from "supertest"
+import app from "./testApp.js"
 
 describe("Category API", () => {
     let jwt, category_id
@@ -14,7 +14,7 @@ describe("Category API", () => {
             query:
             `mutation {
                 login(
-                    email: "zenfreshadmin@gmail.com",
+                    email: "noreplydevnoreplydev@gmail.com",
                     password: "${process.env.PRIVATE_PASSWORD}"
                 ){
                     jwt,
@@ -37,8 +37,8 @@ describe("Category API", () => {
         expect(response.body.data.login.user).toHaveProperty("email")
         expect(response.body.data.login.user).toHaveProperty("role")
 
-        expect(response.body.data.login.user.name).toBe("zenfresh admin")
-        expect(response.body.data.login.user.email).toBe("zenfreshadmin@gmail.com")
+        expect(response.body.data.login.user.name).toBe("Zenfresh Admin")
+        expect(response.body.data.login.user.email).toBe("noreplydevnoreplydev@gmail.com")
         expect(response.body.data.login.user.role).toBe("admin")
     })
 

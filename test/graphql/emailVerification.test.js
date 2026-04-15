@@ -1,6 +1,6 @@
-const request = require("supertest")
-const app = require("./testApp")
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
+import request from "supertest"
+import app from "./testApp.js"
 
 describe("Email Verification API", () => {
     let customer_jwt, admin_jwt
@@ -41,7 +41,7 @@ describe("Email Verification API", () => {
         expect(response.body.data.login.user).toHaveProperty("role")
         expect(response.body.data.login.user).toHaveProperty("is_email_verified")
 
-        expect(response.body.data.login.user.name).toBe("jihad umar")
+        expect(response.body.data.login.user.name).toBe("Jihad Umar")
         expect(response.body.data.login.user.email).toBe("jihadumar1021@gmail.com")
         expect(response.body.data.login.user.phone).toBe("082352395596")
         expect(response.body.data.login.user.address).toBe("Jl. Langsat")
@@ -54,7 +54,7 @@ describe("Email Verification API", () => {
             query:
             `mutation {
                 login(
-                    email: "zenfreshadmin@gmail.com",
+                    email: "noreplydevnoreplydev@gmail.com",
                     password: "${process.env.PRIVATE_PASSWORD}"
                 ){
                     jwt,
@@ -77,8 +77,8 @@ describe("Email Verification API", () => {
         expect(response.body.data.login.user).toHaveProperty("email")
         expect(response.body.data.login.user).toHaveProperty("role")
 
-        expect(response.body.data.login.user.name).toBe("zenfresh admin")
-        expect(response.body.data.login.user.email).toBe("zenfreshadmin@gmail.com")
+        expect(response.body.data.login.user.name).toBe("Zenfresh Admin")
+        expect(response.body.data.login.user.email).toBe("noreplydevnoreplydev@gmail.com")
         expect(response.body.data.login.user.role).toBe("admin")
     })
 
@@ -109,7 +109,7 @@ describe("Email Verification API", () => {
         expect(response.body.data.send_email_verification).toHaveProperty("role")
         expect(response.body.data.send_email_verification).toHaveProperty("is_email_verified")
 
-        expect(response.body.data.send_email_verification.name).toBe("jihad umar")
+        expect(response.body.data.send_email_verification.name).toBe("Jihad Umar")
         expect(response.body.data.send_email_verification.email).toBe("jihadumar1021@gmail.com")
         expect(response.body.data.send_email_verification.phone).toBe("082352395596")
         expect(response.body.data.send_email_verification.address).toBe("Jl. Langsat")

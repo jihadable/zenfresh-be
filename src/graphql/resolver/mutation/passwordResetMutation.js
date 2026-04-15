@@ -36,4 +36,4 @@ const passwordResetMutation = {
     }
 }
 
-module.exports = passwordResetMutation
+export default passwordResetMutation

@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+import { model, Schema, Types } from "mongoose"
 
 const EmailVerificationSchema = new Schema(
     {
@@ -30,4 +30,4 @@ EmailVerificationSchema.index(
 
 const EmailVerification = model("EmailVerification", EmailVerificationSchema)
 
-module.exports = EmailVerification
+export default EmailVerification

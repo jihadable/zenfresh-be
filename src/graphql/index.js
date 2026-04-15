@@ -1,6 +1,6 @@
 import { GraphQLSchema } from "graphql"
-import Mutation from "./resolver/mutation.js"
-import Query from "./resolver/query.js"
+import Mutation from "./resolver/mutation/index.js"
+import Query from "./resolver/query/index.js"
 
 const schema = new GraphQLSchema({
     query: Query,

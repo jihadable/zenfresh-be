@@ -1,6 +1,5 @@
 import fs from "fs"
 import nodemailer from "nodemailer"
-import path from "path"
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -10,11 +9,14 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-const sendEmailVerification = async(target, emailVerificationLink) => {
-    const htmlPath = path.join(__dirname, "../view/emailVerification.html")
-    let html = fs.readFileSync(htmlPath, "utf-8");
-    html = html.replace("{{emailVerificationLink}}", emailVerificationLink)
-    
+const sendEmailVerification = async (target, emailVerificationLink) => {
+    const html = fs
+        .readFileSync(
+            new URL("../view/emailVerification.html", import.meta.url),
+            "utf-8"
+        )
+        .replace("{{emailVerificationLink}}", emailVerificationLink)
+
     await transporter.sendMail({
         to: target,
         subject: "[ZenFresh] Email Verification",
@@ -22,11 +24,14 @@ const sendEmailVerification = async(target, emailVerificationLink) => {
     })
 }
 
-const sendPasswordResetEmail = async(target, passwordResetLink) => {
-    const htmlPath = path.join(__dirname, "../view/passwordReset.html")
-    let html = fs.readFileSync(htmlPath, "utf-8");
-    html = html.replace("{{passwordResetLink}}", passwordResetLink)
-    
+const sendPasswordResetEmail = async (target, passwordResetLink) => {
+    const html = fs
+        .readFileSync(
+            new URL("../view/passwordReset.html", import.meta.url),
+            "utf-8"
+        )
+        .replace("{{passwordResetLink}}", passwordResetLink)
+
     await transporter.sendMail({
         to: target,
         subject: "[ZenFresh] Password Reset",

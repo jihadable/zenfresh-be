@@ -1,9 +1,9 @@
-const { hash, compareSync } = require("bcrypt")
-const User = require("../model/user")
-const { startSession } = require("mongoose")
-const EmailVerification = require("../model/emailVerification")
-const { getToken } = require("../helper/tokenizer")
-const { sendEmailVerification } = require("../helper/mailer")
+import { compareSync, hash } from "bcrypt"
+import { startSession } from "mongoose"
+import { sendEmailVerification } from "../helper/mailer.js"
+import { getToken } from "../helper/tokenizer.js"
+import EmailVerification from "../model/emailVerification.js"
+import User from "../model/user.js"
 
 class UserService {
     constructor(){
@@ -14,9 +14,9 @@ class UserService {
     async addUser({ name, email, password, phone, address, role, is_email_verified }){
         const session = await startSession()
         session.startTransaction()
-
+        
         let user, token
-
+        
         try {
             const hashedPassword = await hash(password, 10)
     
@@ -30,7 +30,7 @@ class UserService {
                 is_email_verified
             }], { session })
             user = users[0]
-
+            
             token = getToken()
             const expireTime = new Date(Date.now() + 24 * 60 * 60 * 1000)
             await this._emailVerificationModel.create([{
@@ -111,4 +111,4 @@ class UserService {
 
 const userService = new UserService()
 
-module.exports = userService
+export default userService

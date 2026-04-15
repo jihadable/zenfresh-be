@@ -1,4 +1,4 @@
-const Order = require("../model/order");
+import Order from "../model/order.js"
 
 class OrderService {
     constructor(){
@@ -66,4 +66,4 @@ class OrderService {
 
 const orderService = new OrderService()
 
-module.exports = orderService
+export default orderService
