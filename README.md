@@ -20,5 +20,7 @@ ZenFresh is a laundry business. The website showcases a landing page, the range 
 » GraphQL
 <br/>
 » Pusher
+<br/>
+» Redis
 
 <img src="https://umarjihad.netlify.app/pic/zenfresh.png" />
